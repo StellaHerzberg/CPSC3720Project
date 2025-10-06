@@ -15,6 +15,7 @@ function App() {
     alert(`Ticket purchased for: ${eventName}`);
   };
 
+
   return (
     <div className="App">
       <h1>Clemson Campus Events</h1>
