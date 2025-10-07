@@ -8,6 +8,7 @@ const { postEvents, listEvents } = require('../controllers/adminController');
 
 
 
+const { postEvents, listEvents } = require('../controllers/adminController');
 router.post('/events', postEvents);
 
 
