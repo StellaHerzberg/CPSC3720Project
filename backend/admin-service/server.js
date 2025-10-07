@@ -18,7 +18,7 @@ app.post("/../shared-db/database.sqlite", (req, res) => {
         console.log(req.body.event);
         return res.json({
             status: 200, 
-            success: true;
+            success: true,
         });
     } catch (error) {
         return res.json ({
