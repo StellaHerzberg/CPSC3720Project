@@ -106,7 +106,7 @@ function queryFullDatabase(db) {
 }
 
 
-module.exports = {connectToDatabase, createDatabaseTable, insertDataIntoDatabase};
+module.exports = { connectToDatabase, createDatabaseTable, insertDataIntoDatabase, queryFullDatabase };
 
 
 
