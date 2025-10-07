@@ -10,16 +10,10 @@ const routes = require('./routes/adminRoutes');
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Mount routes under /api
-app.use('/api', routes);
+app.use('/api/admin', routes);
 
-// Test route
-app.get('/api/test', (req, res) => {
-  console.log(" /api/test route reached");
-  res.json({ message: "Test route working" });
-});
 
 // Ensure database table exists
 createDatabaseTable();

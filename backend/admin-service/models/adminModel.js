@@ -2,6 +2,8 @@
 // NEED TO MODIFY, BASIC MODELS STRUCTURE FROM PROVIDED TEMPLATE
 // ADMIN MODEL
 
+//HEY GUYS!! MESSY BUT I THINK IT'S WORKING! STILL PRINTING SOME VALIDATION STUFF, I WILL GO
+//THROUGH AND REMOVE IT LATER
 
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
@@ -11,13 +13,11 @@ const path = require("path");
 function connectToDatabase() {
 
     const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
-    console.log("[DB] Trying to open:", dbPath);
+    console.log("DB Trying to open:", dbPath);
     // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
-      console.error("[DB] connection error:", err.message);
-    } else {
-      console.log("Database connection established");
+      console.error(err.message);
     }
   });
   return db;
@@ -49,7 +49,6 @@ function deleteDatabaseTable(db) {
 
 
 // Function to insert a new data entry into the database
-/*
 function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
 
     // Sets a variable equal to the sqlite command to insert data
@@ -64,18 +63,7 @@ function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
     
 
 }
-    */
-function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
-  const sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?)';
-  
-  db.run(sql, [eventName, eventDate, numTickets], function(err) {
-    if (err) {
-      console.error("[DB] Insert error:", err.message);
-    } else {
-      console.log(`✅ Inserted event: ${eventName} (${eventDate}), Tickets: ${numTickets}`);
-    }
-  });
-}
+
 
 
 // Function to update a data entry already in the database
@@ -122,7 +110,7 @@ function queryFullDatabase(db) {
 }
 
 
-module.exports = {connectToDatabase, createDatabaseTable, insertDataIntoDatabase};
+module.exports = {connectToDatabase, queryFullDatabase, createDatabaseTable, insertDataIntoDatabase};
 
 
 
