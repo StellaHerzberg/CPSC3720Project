@@ -11,6 +11,7 @@ const path = require("path");
 function connectToDatabase() {
 
     const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
+    console.log("[DB] Trying to open:", dbPath);
     // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
@@ -48,17 +49,32 @@ function deleteDatabaseTable(db) {
 
 
 // Function to insert a new data entry into the database
+/*
 function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
 
     // Sets a variable equal to the sqlite command to insert data
-    let sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?)';
-    
+      const sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?)';
+  
     // Runs the sqlite command to add to the table with new data entires passed into the funciton
     db.run(sql, 
         [eventName, eventDate, numTickets], 
         (err)=> {
             if (err) return console.error(err.message);
     });
+    
+
+}
+    */
+function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
+  const sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?)';
+  
+  db.run(sql, [eventName, eventDate, numTickets], function(err) {
+    if (err) {
+      console.error("[DB] Insert error:", err.message);
+    } else {
+      console.log(`✅ Inserted event: ${eventName} (${eventDate}), Tickets: ${numTickets}`);
+    }
+  });
 }
 
 
