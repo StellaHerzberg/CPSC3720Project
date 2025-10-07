@@ -7,15 +7,22 @@ const cors = require('cors');
 const app = express();
 const { createDatabaseTable } = require('./models/adminModel');
 const routes = require('./routes/adminRoutes');
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Mount routes under /api
 app.use('/api', routes);
 
+// Test route
+app.get('/api/test', (req, res) => {
+  console.log(" /api/test route reached");
+  res.json({ message: "Test route working" });
+});
 
-// ensure database table exists on startup
+// Ensure database table exists
 createDatabaseTable();
 
-// Admin-service runs on port 5001
 const PORT = 5001;
-
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
