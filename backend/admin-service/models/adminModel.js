@@ -4,29 +4,40 @@
 
 
 const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
 
 // Function to create and return a variable connected to the database
 function connectToDatabase() {
 
+    const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
     // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
-    const db = new sqlite3.Database("./../../shared-db/database.sqlite", sqlite3.OPEN_READWRITE, (err)=> {
-        if (err) return console.eerror(err.message);
-    });
-
-    // Return the connected database
-    return db;
+    const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+    if (err) {
+      console.error("[DB] connection error:", err.message);
+    } else {
+      console.log("Database connection established");
+    }
+  });
+  return db;
 }
 
 
 // Function to create the new database table for events
-function createDatabaseTable(db) {
-    
+function createDatabaseTable() {
+    const db = connectToDatabase();
     // Set variable equal to command to create the new database table with needed categories
-    let sql = 'CREATE TABLE events(id INTEGER PRIMARY KEY, eventName, eventDate, numTickets)';
+    let sql = 'CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY AUTOINCREMENT, eventName TEXT, eventDate TEXT, numTickets INTEGER)';
 
     // Create the database table
-    db.run(sql);
+    db.run(sql, (err) =>{
+        if (err) {
+        console.error("[DB] Table creation error:", err.message);
+        }
+        else {
+            console.log("Table sucessfully made!")
+        }
+    });
 }
 
 
@@ -40,7 +51,7 @@ function deleteDatabaseTable(db) {
 function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
 
     // Sets a variable equal to the sqlite command to insert data
-    let sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?,?,?)';
+    let sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?)';
     
     // Runs the sqlite command to add to the table with new data entires passed into the funciton
     db.run(sql, 
@@ -95,15 +106,7 @@ function queryFullDatabase(db) {
 }
 
 
-const db = connectToDatabase();
-
-
-
-// updateDataInDatabase(db, "date", "Halloween", 3)
-
-// deleteDataInDatabase(db, 2);
-
-queryFullDatabase(db);
+module.exports = {connectToDatabase, createDatabaseTable, insertDataIntoDatabase};
 
 
 

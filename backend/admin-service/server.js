@@ -5,28 +5,15 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const { createDatabaseTable } = require('./models/adminModel');
 const routes = require('./routes/adminRoutes');
 app.use(cors());
+app.use(express.json());
 app.use('/api', routes);
 
-// New
-const res = require("node_modules/express/lib/response")
 
-app.post("/../shared-db/database.sqlite", (req, res) => {
-
-    try {
-        console.log(req.body.event);
-        return res.json({
-            status: 200, 
-            success: true,
-        });
-    } catch (error) {
-        return res.json ({
-            status: 400,
-            success: false,
-        });
-}});
-
+// ensure database table exists on startup
+createDatabaseTable();
 
 // Admin-service runs on port 5001
 const PORT = 5001;
