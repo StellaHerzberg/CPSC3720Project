@@ -6,6 +6,7 @@
 const getEvents = () => {
 return [
 
+
     // hardcoded data in here orignally
     // need to get the data from sql database dynamically
     // for client side of things, we just want to fetch the events through a GET api call

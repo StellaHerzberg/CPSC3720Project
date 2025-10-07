@@ -3,16 +3,123 @@
 // ADMIN MODEL
 
 
-const getEvents = () => {
-return [
+const sqlite3 = require("sqlite3").verbose();
 
-    // hardcoded data in here orignally
-    // need to get the data from sql database dynamically
-    // not sure precisely what we're doing here on the admin side of things
-    // might be updating events in here through a postAPI, but then it would not be called get Events
-];
-};
-module.exports = { getEvents };
+
+// Function to create and return a variable connected to the database
+function connectToDatabase() {
+
+    // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
+    const db = new sqlite3.Database("./../../shared-db/database.sqlite", sqlite3.OPEN_READWRITE, (err)=> {
+        if (err) return console.eerror(err.message);
+    });
+
+    // Return the connected database
+    return db;
+}
+
+
+// Function to create the new database table for events
+function createDatabaseTable(db) {
+    
+    // Set variable equal to command to create the new database table with needed categories
+    let sql = 'CREATE TABLE events(id INTEGER PRIMARY KEY, eventName, eventDate, numTickets)';
+
+    // Create the database table
+    db.run(sql);
+}
+
+
+// Function to delete the events database table if needed
+function deleteDatabaseTable(db) {
+    db.run("DROP TABLE events");
+}
+
+
+// Function to insert a new data entry into the database
+function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
+
+    // Sets a variable equal to the sqlite command to insert data
+    let sql = 'INSERT INTO events(eventName, eventDate, numTickets) VALUES (?,?,?,?,?)';
+    
+    // Runs the sqlite command to add to the table with new data entires passed into the funciton
+    db.run(sql, 
+        [eventName, eventDate, numTickets], 
+        (err)=> {
+            if (err) return console.error(err.message);
+    });
+}
+
+
+// Function to update a data entry already in the database
+function updateDataInDatabase(db, attributeToUpdate, newData, dataIndex) {
+
+    // Sets a new variable equal to the command to update the desired data
+    let sql = 'UPDATE events SET ' + attributeToUpdate + ' = ? WHERE id = ?';
+
+    // Runs the data update with the given command
+    db.run(sql, [newData, dataIndex], (err) => {
+        if (err) return console.error(err.message);
+    });
+}
+
+
+// Function to delete a specified data entry in the database
+function deleteDataInDatabase(db, indexToDelete) {
+
+    // Sets a new variable equal to the command to delete the data at the given id
+    let sql = 'DELETE FROM events WHERE id = ?';
+
+    // Runs the data deletion with the given command
+    db.run(sql, indexToDelete, (err) => {
+        if (err) return console.error(err.message);
+    });
+}
+
+
+// Function to select the entire database and print out each entry
+function queryFullDatabase(db) {
+
+    // Sets a new variable equal to the command to select data from all entries
+    let sql = 'SELECT * FROM events';
+
+    // Runs the data query with the given command
+    db.all(sql, [], (err, rows) => {
+        if (err) return console.error(err.message);
+
+        // Prints out each individual data entry and its associated values
+        rows.forEach((row) => {
+            console.log(row);
+        })
+    });
+}
+
+
+const db = connectToDatabase();
+
+
+
+// updateDataInDatabase(db, "date", "Halloween", 3)
+
+// deleteDataInDatabase(db, 2);
+
+queryFullDatabase(db);
+
+
+
+
+// !!! Will need to put final product in this format below, the const getEvents and return stuff and set equal to module.exports
+
+// const getEvents = () => {
+// return [
+
+//     // hardcoded data in here orignally
+//     // need to get the data from sql database dynamically
+//     // not sure precisely what we're doing here on the admin side of things
+//     // might be updating events in here through a postAPI, but then it would not be called get Events
+// ];
+// };
+// module.exports = { getEvents };
 
 // Hardcoded data format example: 
 // { id: 1, name: 'Clemson Football Game', date: '2025-09-01' }
