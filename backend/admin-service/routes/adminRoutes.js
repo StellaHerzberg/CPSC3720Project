@@ -6,9 +6,6 @@ const express = require('express');
 const router = express.Router();
 const { postEvents, listEvents } = require('../controllers/adminController');
 
-
-
-const { postEvents, listEvents } = require('../controllers/adminController');
 router.post('/events', postEvents);
 
 
