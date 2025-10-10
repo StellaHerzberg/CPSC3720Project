@@ -18,6 +18,11 @@
 
 import { getEvents, purchaseTicket } from '../models/clientModel.js';
 
+// Handles request to retrieve events from database and returns as JSON response
+// Params: req - the request object
+// Params: res - response object to sent retrieved event 
+// Return: None because responds with server status
+// Side Effects: Calls getEvents() and sends JSON
 export const listEvents = async (req, res) => {
     try {
         const events = await getEvents();
@@ -27,6 +32,12 @@ export const listEvents = async (req, res) => {
     }
 };
 
+// Handles request to purchase ticket for an event. Function extracts event ID, calls purchaseTicket() to decrement,
+// and returns the number of tickets remaining.
+// Params: req - request object to contain the ID of event being purchased
+// Params: res - response object to send success or error
+// Return: None because responds directly with status
+// Side Effects: Modifies "numTickets" in database for event and sends JSON response.
 export const handleTicketPurchase = async (req, res) => {
     
     const id = req.params.id;
