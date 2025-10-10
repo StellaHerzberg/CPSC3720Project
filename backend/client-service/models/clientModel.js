@@ -1,19 +1,60 @@
 
-// NEED TO MODIFY, BASIC MODELS STRUCTURE FROM PROVIDED TEMPLATE
-// CLIENT MODEL
+// import sqlite3 from "sqlite3";
+// import path from "path";
+// import {fileURLToPath} from "url";
+const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
 
-const getEvents = () => {
-return [
+// Function to create and return a variable connected to the database
+function connectToDatabase() {
 
+    // const sqlite = sqlite3.verbose();
 
-    // hardcoded data in here orignally
-    // need to get the data from sql database dynamically
-    // for client side of things, we just want to fetch the events through a GET api call
-    // also will need to decrement ticket count with a post api call
-];
+// Recreate __dirname in ES modules
+    // const __filename = fileURLToPath(import.meta.url);
+    // const __dirname = path.dirname(__filename);
+    const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
+    console.log("DB Trying to open:", dbPath);
+    // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
+    const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+  return db;
+}
+
+const getEvents = async () => {
+    const db = connectToDatabase();
+
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM events';
+        db.all(sql, [], (err,rows) => {
+            if (err) return reject(err);
+
+            resolve(rows);
+        });
+    });
 };
-module.exports = { getEvents };
+
+module.exports = { getEvents }
+
+// const getEvents = (callback) => {
+
+//     // Sets a new variable equal to the command to select data from all entries
+//     const db = connectToDatabase();
+//     let sql = 'SELECT * FROM events';
+
+//     db.all(sql, [], (err, rows) => {
+//         if (err) return callback(err, rows);
+//         callback(null, rows);
+//     });
+// };
+
+
+// export default { getEvents };
+
 
 // Hardcoded data format example: 
 // { id: 1, name: 'Clemson Football Game', date: '2025-09-01' }

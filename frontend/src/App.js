@@ -9,7 +9,7 @@ function App() {
     .then((res) => res.json())
     .then((data) => setEvents(data))
     .catch((err) => console.error(err));
-  }, []);
+  }, [])
 
   const buyTicket = (eventName) => {
     alert(`Ticket purchased for: ${eventName}`);
@@ -22,8 +22,8 @@ function App() {
         <ul>
         {events.map((event) => (
           <li key={event.id}>
-            {event.name} - {event.date}{' '}
-              <button onClick={() => buyTicket(event.name)}>Buy
+            {event.eventName} - {event.eventDate}{' '}
+              <button onClick={() => buyTicket(event.eventName)}>Buy
                 Ticket</button>
           </li>
         ))}
