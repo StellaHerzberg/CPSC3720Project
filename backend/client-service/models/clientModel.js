@@ -7,6 +7,9 @@ const path = require("path");
 
 
 // Function to create and return a variable connected to the database
+// Params: None
+// Return: db a SQLite database connection object used for queries
+// Side effects: creates database file if doesn't exist, print error message if fails
 function connectToDatabase() {
 
     // const sqlite = sqlite3.verbose();
@@ -26,6 +29,12 @@ function connectToDatabase() {
 }
 
 // Function to update a data entry already in the database
+// Params: db - SQLite database connection 
+// Params: attributeToUpdate - name of attribute in table to be updated
+// Params: newData - new value to assign to attribute
+// Params: dataIndex = ID of event record to update
+// Return: None
+// Side Effects: Executes SQL UPDATE command to modify the table, prints an error if fails
 function updateDataInDatabase(db, attributeToUpdate, newData, dataIndex) {
 
     // Sets a new variable equal to the command to update the desired data
@@ -37,6 +46,11 @@ function updateDataInDatabase(db, attributeToUpdate, newData, dataIndex) {
     });
 }
 
+// Function to retrieve all event records from table in shared database. Establishes a 
+// database connection, executes SQL query, and returns all rows
+// Params: None
+// Returns: Promise<Array<Object>> - resolves to an array of records corresponding to row in table
+// Side Effects: opens connection to database and logs the connection
 const getEvents = async () => {
     const db = connectToDatabase();
 
@@ -50,6 +64,11 @@ const getEvents = async () => {
     });
 };
 
+// Handles purchase of a single ticket for a specified event. Function retrieves event from the table
+// verifies that tickets are available, manipulates number of tickers and updates database
+// Params: id - unique ID of event
+// Returns: Promise<number> - promise resolves to updated number of remaining tickets after purchase
+// Side Effects: reads and updates table in database. Decrements numTickets column if no error.
 const purchaseTicket = async (id) => {
     const db = connectToDatabase();
 
