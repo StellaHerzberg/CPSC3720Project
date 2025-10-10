@@ -19,7 +19,6 @@ function App() {
       });
 
       const data = await res.json();
-      console.log(data);
 
       if (!res.ok) {
         alert(`Error: ${data.error}`);
@@ -45,12 +44,12 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Clemson Campus Events</h1>
+      <h1 role="webpage_title">Clemson Campus Events</h1>
         <ul>
         {events.map((event) => (
-          <li key={event.id}>
+          <li role="list_of_available_events" key={event.id}>
             {event.eventName} - {event.eventDate}{' '}
-              <button onClick={() => buyTicket(event.eventName, event.id)}>Purchase Event
+              <button role = "ticket_purchase_button" onClick={() => buyTicket(event.eventName, event.id)}>Purchase Event
                 Ticket</button> - Tickets Left: {event.numTickets} 
           </li>
         ))}

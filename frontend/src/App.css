@@ -40,3 +40,15 @@
 .button {
   font-size: 20px;
 }
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin: 3vh 0;
+}
+
+h1 {
+  font-size: 4.5rem;
+}

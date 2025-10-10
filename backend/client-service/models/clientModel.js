@@ -52,11 +52,7 @@ const getEvents = async () => {
 
 const purchaseTicket = async (id) => {
     const db = connectToDatabase();
-    // const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
-    // const db = await open({
-    //     filename: dbPath,
-    //     driver: sqlite3.Database
-    // })
+
     return new Promise((resolve, reject) => {
         db.get('SELECT * FROM events WHERE id = ?', [id], (err, event) => {
 
