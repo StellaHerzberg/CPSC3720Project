@@ -25,6 +25,18 @@ function connectToDatabase() {
   return db;
 }
 
+// Function to update a data entry already in the database
+function updateDataInDatabase(db, attributeToUpdate, newData, dataIndex) {
+
+    // Sets a new variable equal to the command to update the desired data
+    let sql = 'UPDATE events SET ' + attributeToUpdate + ' = ? WHERE id = ?';
+
+    // Runs the data update with the given command
+    db.run(sql, [newData, dataIndex], (err) => {
+        if (err) return console.error(err.message);
+    });
+}
+
 const getEvents = async () => {
     const db = connectToDatabase();
 
@@ -38,7 +50,38 @@ const getEvents = async () => {
     });
 };
 
-module.exports = { getEvents }
+const purchaseTicket = async (id) => {
+    const db = connectToDatabase();
+    // const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
+    // const db = await open({
+    //     filename: dbPath,
+    //     driver: sqlite3.Database
+    // })
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM events WHERE id = ?', [id], (err, event) => {
+
+            if (err) return reject(err);
+            if (!event) return reject(new Error("Event not found."));
+            if (event.numTickets <= 0) return reject(new Error("Event is sold out."));
+
+            const ticketsRemaining = event.numTickets - 1;
+
+            db.run(
+                'UPDATE events SET numTickets = ? WHERE id = ?', 
+                [ticketsRemaining, id], 
+                function(err) {
+                    if (err) return reject(err);
+                    resolve(ticketsRemaining);
+                }
+            );
+        });
+    });
+}
+
+
+
+
+module.exports = { getEvents, purchaseTicket }
 
 // const getEvents = (callback) => {
 

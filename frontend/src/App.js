@@ -11,8 +11,35 @@ function App() {
     .catch((err) => console.error(err));
   }, [])
 
-  const buyTicket = (eventName) => {
-    alert(`Ticket purchased for: ${eventName}`);
+  const buyTicket = async (eventName, id) => {
+
+    try {
+      const res = await fetch(`http://localhost:6001/api/events/${id}/purchase`, {
+        method: 'POST'
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (!res.ok) {
+        alert(`Error: ${data.error}`);
+        return;
+      }
+
+      setEvents(prevEvents =>
+        prevEvents.map(event =>
+          event.id === id ? { ...event, numTickets: data.ticketsRemaining} : event
+        )
+      );
+
+      alert(`Ticket purchased for: ${eventName}. Remaining tickets: ${data.ticketsRemaining}`);
+
+
+
+    } catch (error) {
+      console.error(error);
+      alert("Failed to purchase ticket.");
+    }
   };
 
 
@@ -23,8 +50,8 @@ function App() {
         {events.map((event) => (
           <li key={event.id}>
             {event.eventName} - {event.eventDate}{' '}
-              <button onClick={() => buyTicket(event.eventName)}>Buy
-                Ticket</button>
+              <button onClick={() => buyTicket(event.eventName, event.id)}>Purchase Event
+                Ticket</button> - Tickets Left: {event.numTickets} 
           </li>
         ))}
         </ul>
