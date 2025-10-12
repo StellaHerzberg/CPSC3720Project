@@ -1,3 +1,6 @@
+// This module defines all database-related operations for the
+// admin service. It handles connecting to the shared SQLite
+// database and provides CRUD functions for managing "events".
 
 // NEED TO MODIFY, BASIC MODELS STRUCTURE FROM PROVIDED TEMPLATE
 // ADMIN MODEL
@@ -10,6 +13,8 @@ const path = require("path");
 
 
 // Function to create and return a variable connected to the database
+// Params: None
+// Returns: The database connection object (`db`).
 function connectToDatabase() {
 
     const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
@@ -24,7 +29,13 @@ function connectToDatabase() {
 }
 
 
-// Function to create the new database table for events
+// Function to create the new database table for events set up like:
+// Columns:
+//   - id: Primary key 
+//   - eventName: Name of the event
+//   - eventDate: Date of the event
+//   - numTickets: Number of tickets
+// No parameters
 function createDatabaseTable() {
     const db = connectToDatabase();
     // Set variable equal to command to create the new database table with needed categories
@@ -43,12 +54,19 @@ function createDatabaseTable() {
 
 
 // Function to delete the events database table if needed
+// Params: db - active database connection
+// Return: None
 function deleteDatabaseTable(db) {
     db.run("DROP TABLE events");
 }
 
 
 // Function to insert a new data entry into the database
+// Params: db - database connection
+// Params: eventName - name of event to be added
+// Params: eventDate - date of event to be added
+// Params: numTickets - number of tickets to be allocated to event
+// Return: None
 function insertDataIntoDatabase(db, eventName, eventDate, numTickets) {
 
     // Sets a variable equal to the sqlite command to insert data
