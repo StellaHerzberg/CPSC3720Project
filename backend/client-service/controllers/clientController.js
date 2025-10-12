@@ -1,3 +1,6 @@
+// Controller handles all client-facing operations (retrieving available events and processing 
+// ticket purchases. Connects to the client module layer for database access and returns structures
+// JSON responsees to the routes.
 
 // NEED TO MODIFY, COPIED FROM PROVIDED CONTROLLER TEMPLATE
 // CLIENT CONTROLLER
