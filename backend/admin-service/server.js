@@ -1,4 +1,6 @@
-
+// Basic template for an admin-server entry point file. 
+// It sets up an Express server, enables CORS, configures middleware, mounts
+// the admin routes, ensures the database table exists, and starts listening on a port.
 // WILL NEED TO CHANGE, COPIED BASIC SERVER FROM PROVIDED TEMPLATE
 // ADMIN SERVER
 
