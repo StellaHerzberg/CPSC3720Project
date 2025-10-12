@@ -1,3 +1,5 @@
+// Module defines all database related functions for the client-service. It connects to the shared
+// database and provides methods to read events and handle ticket purchases.
 
 // import sqlite3 from "sqlite3";
 // import path from "path";
