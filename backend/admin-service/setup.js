@@ -1,8 +1,12 @@
+// Database connection module for backend. Code in this file is responsible
+// for locating, opening, and exporting a connection to the SQLite database
+// for others to use to run queries.
+
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
 
-
+// Define database file path
 const dbPath = path.join(__dirname, "../shared-db/database.sqlite");
 console.log("DB Trying to open:", dbPath);
 
