@@ -1,5 +1,5 @@
-// File contains style and design code for the frontend web application.
-// Sets colors, font sizes, alignments, etc.
+/* File contains style and design code for the frontend web application.
+Sets colors, font sizes, alignments, etc. */
 .App {
   text-align: center;
 }
@@ -24,6 +24,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  align-content: center;
 }
 
 .App-link {
@@ -41,16 +42,20 @@
 
 .button {
   font-size: 20px;
+  align-items: center;
 }
 
 ul {
   list-style-type: none;
+  align-items: center;
 }
 
 li {
   margin: 3vh 0;
+  align-items: center;
 }
 
 h1 {
   font-size: 4.5rem;
+  align-items: center;
 }
