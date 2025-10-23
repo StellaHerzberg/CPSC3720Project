@@ -51,7 +51,7 @@ function App() {
             {event.eventName} - {event.eventDate}{' '}
               <button role = "ticket_purchase_button" onClick={() => buyTicket(event.eventName, event.id)}>Purchase Event
                 Ticket</button> - Tickets Left: {event.numTickets} 
-          </li>
+          </li> 
         ))}
         </ul>
     </div>
