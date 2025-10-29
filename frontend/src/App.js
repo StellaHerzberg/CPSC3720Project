@@ -2,6 +2,7 @@
 // API and provides functionality to retrieve event data, purchase tickets, etc.
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import VoiceTest from "./Voice";
 
 // Serves as root componenet of web app. Fetches the event data, displays events, handles user interactions.
 // Returns: the webpage displaying all available events and buttons
@@ -71,8 +72,14 @@ function App() {
           </li> 
         ))}
         </ul>
+        <div style={{ marginBottom: "20px" }}>
+          <h2>Voice Input</h2>
+            <p>Click the mic and talk. Whatever you say will hopefully print out below, fingers crossed</p>
+          <VoiceTest/> 
+        </div>
     </div>
     );
 }
+
 
 export default App;
