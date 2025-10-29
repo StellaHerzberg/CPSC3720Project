@@ -2,6 +2,7 @@
 // API and provides functionality to retrieve event data, purchase tickets, etc.
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import 'ollama'
 
 // Serves as root componenet of web app. Fetches the event data, displays events, handles user interactions.
 // Returns: the webpage displaying all available events and buttons
@@ -57,6 +58,8 @@ function App() {
       alert("Failed to purchase ticket.");
     }
   };
+
+
 
   //Displays page title, list of events with all the event information plus operations
   return (
