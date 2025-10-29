@@ -3,11 +3,19 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import VoiceTest from "./Voice";
+import AITest from "./AITest"
+
 
 // Serves as root componenet of web app. Fetches the event data, displays events, handles user interactions.
 // Returns: the webpage displaying all available events and buttons
 // Side effects: indicates network request on component mount to get event data and update state when 
 // necessary.
+
+
+
+
+
+
 function App() {
   const [events, setEvents] = useState([]);
 
@@ -59,15 +67,19 @@ function App() {
     }
   };
 
+
+
+ 
+
   //Displays page title, list of events with all the event information plus operations
   return (
     <div className="App">
-      <h1 role="webpage_title">Clemson Campus Events</h1>
+      <h1 role="banner">Clemson Campus Events</h1>
         <ul>
         {events.map((event) => (
-          <li role="list_of_available_events" key={event.id}>
+          <li role="list" key={event.id}>
             {event.eventName} - {event.eventDate}{' '}
-              <button role = "ticket_purchase_button" onClick={() => buyTicket(event.eventName, event.id)}>Purchase Event
+              <button onClick={() => buyTicket(event.eventName, event.id)}>Purchase Event
                 Ticket</button> - Tickets Left: {event.numTickets} 
           </li> 
         ))}
@@ -77,6 +89,7 @@ function App() {
             <p>Click the mic and talk. Whatever you say will hopefully print out below, fingers crossed</p>
           <VoiceTest/> 
         </div>
+        <AITest/>
     </div>
     );
 }

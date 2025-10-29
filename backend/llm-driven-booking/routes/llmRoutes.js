@@ -4,7 +4,7 @@
 const express = require('express');
 const ollama = require('ollama');
 const router = express.Router();
-const { listEvents, handleTicketPurchaseLLM } = require('../controllers/llmController');
-router.get('/events', listEvents);
-router.post('/llm/parse', handleTicketPurchaseLLM)
+const { handleOllama } = require('../controllers/llmController');
+// router.get('/events', listEvents);
+router.post('/llm/parse', handleOllama)
 module.exports = router;

@@ -1,29 +1,21 @@
-import { getEvents, purchaseTicket } from '../models/llmModel.js';
+
+import { ollamaInteraction } from '../models/llmModel.js';
 
 // Just trying to mimic the client service rn, not actually sure what we need in here
 
+export const callOllama = async (req, res) => {
+    try {
+        const { prompt } = req.body;
+        const response = await ollamaInteraction(prompt);
+        res.json(response);
 
-export const listEvents = async (req, res) => {
-    // try {
-    //     const events = await getEvents();
-    //     res.json(events);
-    // } catch (err) {
-    //     res.status(500).json({error: "Failed to fetch events", details: err.message})
-    // }
-};
+    } catch (err) {
+        // console.error(err);
+        res.status(500).json({error: "Failed to correctly chat with the AI model."})
+    }
 
+}
 
-export const handleTicketPurchaseLLM = async (req, res) => {
-    
-    // const id = req.params.id;
-
-    // try {
-    //     const ticketsRemaining = await purchaseTicket(id);
-    //     res.json({success: true, ticketsRemaining})
-    // } catch (err) {
-    //     res.status(400).json({error: err.message});
-    // }
-};
 
 
 
