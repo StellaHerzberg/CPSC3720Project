@@ -2,11 +2,7 @@
 // API and provides functionality to retrieve event data, purchase tickets, etc.
 import React, { useEffect, useState } from 'react';
 import './App.css';
-<<<<<<< HEAD
-import 'ollama'
-=======
 import VoiceTest from "./Voice";
->>>>>>> 4de6ce6868d1d9442850cf23fd4f5174ddf91165
 
 // Serves as root componenet of web app. Fetches the event data, displays events, handles user interactions.
 // Returns: the webpage displaying all available events and buttons
@@ -14,7 +10,7 @@ import VoiceTest from "./Voice";
 // necessary.
 function App() {
   const [events, setEvents] = useState([]);
-  
+
   // Gets event data from API when it first mounts. Ensures list is populated when page loads.
   // Sends request to backend and updates local state
   useEffect(() => {
@@ -38,7 +34,7 @@ function App() {
       });
 
       const data = await res.json();
-      
+
       // Handles errors
       if (!res.ok) {
         alert(`Error: ${data.error}`);
@@ -62,8 +58,6 @@ function App() {
       alert("Failed to purchase ticket.");
     }
   };
-
-
 
   //Displays page title, list of events with all the event information plus operations
   return (
