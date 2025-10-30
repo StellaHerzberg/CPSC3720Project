@@ -6,5 +6,6 @@ const ollama = require('ollama');
 const router = express.Router();
 const { handleOllama } = require('../controllers/llmController');
 // router.get('/events', listEvents);
-router.post('/llm/parse', handleOllama)
 module.exports = router;
+router.post('/llm/parse', handleOllama);
+
