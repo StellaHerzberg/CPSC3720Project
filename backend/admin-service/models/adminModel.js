@@ -42,15 +42,17 @@ function createDatabaseTable() {
     let sql = 'CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY AUTOINCREMENT, eventName TEXT, eventDate TEXT, numTickets INTEGER)';
 
     // Create the database table
-    db.run(sql, (err) =>{
-        if (err) {
-        console.error("[DB] Table creation error:", err.message);
-        }
-        else {
-            console.log("Table sucessfully made!")
-        }
-    });
+    if (process.env.NODE_ENV !== "test") {
+        db.run(sql, (err) => {
+            if (err) {
+            console.error(err.message);
+            } else {
+            console.log("Table successfully made!");
+            }
+        });
+    }
 }
+
 
 
 // Function to delete the events database table if needed

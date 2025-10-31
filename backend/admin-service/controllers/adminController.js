@@ -22,9 +22,11 @@ function postEvents(req, res) {
   const db = connectToDatabase();
   try {
     insertDataIntoDatabase(db, eventName, eventDate, numTickets);
-  }
-  catch(err) {
+    
+    return res.status(201).json({ eventName, eventDate, numTickets });
+  } catch (err) {
     console.error(err.message);
+    return res.status(500).json({ error: "Database error" });
   }
 }
 
