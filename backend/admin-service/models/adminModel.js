@@ -17,7 +17,11 @@ const path = require("path");
 // Returns: The database connection object (`db`).
 function connectToDatabase() {
 
-    const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
+    const dbPath =
+    process.env.NODE_ENV === "test"
+      ? path.join(__dirname, "../../shared-db/test.sqlite")
+      : path.join(__dirname, "../../shared-db/database.sqlite");
+
     console.log("DB Trying to open:", dbPath);
     // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
@@ -42,15 +46,14 @@ function createDatabaseTable() {
     let sql = 'CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY AUTOINCREMENT, eventName TEXT, eventDate TEXT, numTickets INTEGER)';
 
     // Create the database table
-    if (process.env.NODE_ENV !== "test") {
-        db.run(sql, (err) => {
-            if (err) {
+
+    db.run(sql, (err) => {
+        if (err) {
             console.error(err.message);
-            } else {
+        } else {
             console.log("Table successfully made!");
-            }
-        });
-    }
+        }
+    });
 }
 
 
