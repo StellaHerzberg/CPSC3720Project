@@ -12,7 +12,10 @@ const routes = require('./routes/clientRoutes');
 app.use(cors());
 app.use('/api', routes);
 
-// Client-service runs on port 6001
-const PORT = 6001;
 
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = 6001;
+  app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+}

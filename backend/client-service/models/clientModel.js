@@ -14,12 +14,11 @@ const path = require("path");
 // Side effects: creates database file if doesn't exist, print error message if fails
 function connectToDatabase() {
 
-    // const sqlite = sqlite3.verbose();
+    const dbPath =
+    process.env.NODE_ENV === "test"
+      ? path.join(__dirname, "../../shared-db/test.sqlite")
+      : path.join(__dirname, "../../shared-db/database.sqlite");
 
-// Recreate __dirname in ES modules
-    // const __filename = fileURLToPath(import.meta.url);
-    // const __dirname = path.dirname(__filename);
-    const dbPath = path.join(__dirname, "../../shared-db/database.sqlite");
     console.log("DB Trying to open:", dbPath);
     // Set the path to the sqlite database equal to a new variable, opening in readwrite mode
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
