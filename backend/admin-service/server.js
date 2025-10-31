@@ -17,8 +17,12 @@ app.use(express.json());
 app.use('/api/admin', routes);
 
 
-// Ensure database table exists
-createDatabaseTable();
+// Ensure database table exists (only run if not testing)
+if (process.env.NODE_ENV !== 'test') {
+  createDatabaseTable();
+  const PORT = 5001;
+  app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+}
 
-const PORT = 5001;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+//Export app for Jest
+module.exports = app;
