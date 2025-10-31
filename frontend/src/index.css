@@ -17,5 +17,12 @@ li {
 }
 
 button {
+  /* font-size: 30px;
+  align-items: center;
+  padding: 12px 24px;
+  background: #efbbfdff;
+  color: white;
+  border: none;
+  border-radius: 8px; */
   font-size: 2rem;
 }
