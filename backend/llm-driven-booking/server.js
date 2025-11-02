@@ -1,4 +1,6 @@
-
+// Initializes and configures the express backend server for Tiger Tix. Sets up middleware and 
+// mounts LLM related routes and ports. Acts as main entry point for handling requests and forwarding
+// them to the correct handlers before returning to frontend.
 
 const ollama = require('ollama')
 const express = require('express');
