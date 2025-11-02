@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,9 @@
     "cors": "^2.8.5",
     "curl": "^0.1.4",
     "express": "^5.1.0",
+    "jest": "^30.2.0",
     "ollama": "^0.6.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.1.4"
   }
 }

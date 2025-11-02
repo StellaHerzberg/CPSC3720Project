@@ -18,6 +18,10 @@ import AITest from "./AITest"
 
 function App() {
   const [events, setEvents] = useState([]);
+  const [query, setQuery] = useState('');
+  const[message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Gets event data from API when it first mounts. Ensures list is populated when page loads.
   // Sends request to backend and updates local state
@@ -27,6 +31,47 @@ function App() {
     .then((data) => setEvents(data))
     .catch((err) => console.error(err));
   }, [])
+
+  async function handleRequest(e) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+    setError('');
+    setEvents([]);
+
+    try {
+      const response = await fetch('http://localhost:7001/api/llm/parse', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({prompt: query})
+      });
+    
+    const headers = (response.headers.get('content-type') || '').toLowerCase();
+
+    if (headers.includes('application/json')) {
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setEvents(data);
+      }
+      else if (data?.events && Array.isArray(data.events)) {
+        setEvents(data.events);
+      }
+      else {
+        setMessage(JSON.stringify(data));
+      }
+      } else {
+        const text = await response.text();
+        setMessage(text);
+      }
+    } catch (err) {
+      setError("Request failed");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+    }
+  
+
 
   //Handles process of purchasing tocker for a given event. Sends request to API to decrement available
   // ticket count, etc.
@@ -74,7 +119,46 @@ function App() {
   //Displays page title, list of events with all the event information plus operations
   return (
     <div className="App">
-      <h1 role="banner">Clemson Campus Events</h1>
+      <h1 role="banner">Welcome to Tiger Tix!</h1>
+
+      <main> 
+        <form onSubmit = {handleRequest}>
+          <input 
+            type = "text"
+            placeholder = "Enter your desired event!"
+            value = {query}
+            onChange = {(e) => setQuery(e.target.value)}
+            style = {{ width: '60%', fontSize: '25px'}}
+            />
+          <button type = "submit" disabled = {loading}>Ask!</button>
+        </form>
+
+        {loading && <p>Loading...</p>}
+        {error && <p style = {{ color : 'black' }}>{error}</p>}
+
+        {events.length > 0 ? (
+          <section> 
+            <h2>Available events</h2>
+            <ul>
+              {events.map((ev, i) => (
+                <li key = {ev.id ?? i}>
+                  <strong>{ev.eventName ?? 'Unnamed event'}</strong>
+                  {ev.available !== undefined ? ` - ${ev.available} available` : ''}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : (
+          message && (
+            <section> 
+                <h2>Ticket Booking Assistant</h2>
+                <pre style = {{ whiteSpace: 'pre-wrap' }}>{message}</pre>
+            </section>
+          )
+        )}
+      </main>
+
+      {/* This is the part that we had beforehand */}
         <ul>
         {events.map((event) => (
           <li role="list" key={event.id}>

@@ -27,11 +27,30 @@ import { getEvents, purchaseTicket } from '../models/clientModel.js';
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
 export const listEvents = async (req, res) => {
+    // OLD VERSION = WORKS MOSTLY
+    // try {
+    //     const events = await getEvents();
+    //     res.json(events);
+    // } catch (err) {
+    //     res.status(500).json({error: "Failed to fetch events", details: err.message})
+    // }
+
     try {
         const events = await getEvents();
-        res.json(events);
-    } catch (err) {
-        res.status(500).json({error: "Failed to fetch events", details: err.message})
+
+        if (res) {
+            return res.status(200).json(events);
+        }
+
+        return events;
+    }
+
+    catch (error) {
+        if (res) {
+            return res.status(500).json({error: "Failed to fetch events", })
+        } else {
+            throw error;
+        }
     }
 };
 
