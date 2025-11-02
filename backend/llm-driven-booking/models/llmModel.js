@@ -1,8 +1,18 @@
+// Defines backend interaction with LLM for Tiger Tix. Provides functionality to send structured
+// prompts to model and receive AI generated responses. File serves as the communication layer between 
+// backend logic and AI model to ensure consistent, machine readable responses that can be processed 
+// by other parts of application.
+
+
 // const sqlite3 = require("sqlite3").verbose();
 // const path = require("path");
 import ollama from 'ollama'
 
-
+// Sends a structured chat prompt to the Ollama LLM and retrieves parsed response. Interacts with
+// Ollama API using a system prompt that defines the model's behavior. 
+// Param - prompt - user's natural language input
+// Param - optional object that can include a custom Ollama option
+// Return - Response object returned from Ollama API or error otherwise
 export const ollamaInteraction = async (prompt, opts = {}) =>  {
 
     const systemInstruction = `You are an expert even planning assistant for our event booking platform, Tiger Tix. Your task is to PARSE
