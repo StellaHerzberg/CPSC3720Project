@@ -86,8 +86,7 @@ export const handleOllama = async (req, res) => {
                 instruction: "Please provide a short request that includes the desired action, event, and number of tickets!",
                 example: "I want to book 2 tickets for the jazz concert."
             };
-            // const instruction = "Please provide a short request that includes the desired action, event, and number of tickets!";
-            // return res.status(200).type('text/plain').send(instruction);
+          
             return res.status(200).json(help);
         }
 
@@ -104,16 +103,9 @@ export const handleOllama = async (req, res) => {
                 example: "I want to book 2 tickets for the jazz concert."
             };
             return res.status(200).json(help);
-            // const instruction = "Please provide a short request that includes the desired action, event, and number of tickets!";
-            // return res.status(200).type('text/plain').send(instruction);
+   
         }
-        // let rawText = '';
-        // if (typeof response === 'string') rawText = response;
-        // else if (response?.choices?.[0]?.message?.content) rawText = response.choices[0].message.content;
-        // else if (response?.output) rawText = JSON.stringify(response.output);
-        // else rawText = JSON.stringify(response);
-
-        // Try to parse directly, else extract JSON block
+     
         let parsed = null;
         try {
             parsed = JSON.parse(rawText);
@@ -135,30 +127,18 @@ export const handleOllama = async (req, res) => {
                 example: "I want to book 2 tickets for the jazz concert."
             };
             return res.status(200).json(help);
-            // const instruction = "Please provide a short request that includes the desired action, event, and number of tickets!";
-            // return res.status(200).type('text/plain').send(instruction);
+    
         }
 
-        // const allEvents = Array.isArray( await listEvents()) ? await listEvents() : await listEvents(req,res) || [];
-        let allEvents = [];
+      let allEvents = [];
         try {
             const potentialEvents = await listEvents();
             console.log("Potential events: ", potentialEvents);
-            // res.json(potentialEvents); 
             if (Array.isArray(potentialEvents)) {
                 allEvents = potentialEvents;
-                // return res.json(allEvents);
             }
-            // else {
-            //     console.warn('List events did not return an array; value: ', potentialEvents);
+         
 
-            //     const clientModel = await import('../../client-service/models/clientModel.js');
-            //     const getEvents = clientModel.getEvents || clientModel.listEvents || clientModel.getAllEvents;
-            //     if (typeof getEvents === 'function') {
-            //         const tryingEvents = await getEvents();
-            //         if (Array.isArray(tryingEvents)) allEvents = tryingEvents;
-            //     }
-            // }
         } catch (listErr) {
             console.error('listEvents threw: ', listErr);
         }
@@ -173,7 +153,6 @@ export const handleOllama = async (req, res) => {
         try {
             if (queryName) {
                 matched = allEvents.filter(ev => {
-                    // const n = normalize(ev.name ?? ev.event ?? '');
                     const n = normalize(ev.eventName ?? ev.eventDate ?? '');
                     return n.includes(queryName) || queryName.split(' ').every(tok => tok && n.includes(tok));
                 });
@@ -192,14 +171,7 @@ export const handleOllama = async (req, res) => {
 
         return res.status(200).json({events: matched});
 
-        // if (parsed.intent === 'view') {
-        //     const events = await listEvents(req, res);
-        //     return res.status(200).json(events);
-        // }
 
-        // return res.status(200).json(parsed);
-
-        // res.json(response);
 
     } catch (err) {
         // console.error(err);

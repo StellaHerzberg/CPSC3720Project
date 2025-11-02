@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export default function VoiceTest() {
+export default function VoiceTest({onTranscribe}) {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [status, setStatus] = useState("Okay I think it's working, but it's a little janky. So talk fast and don't pause cause it'll think you're finished");
+  const [status, setStatus] = useState("Click 'Start Listening' to use voice text to search events in the text box above!");
 
   const startListening = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -30,7 +30,11 @@ export default function VoiceTest() {
       setTranscript(text);
       setStatus("Done");
       setListening(false);
+
+      if (typeof onTranscribe === "function") onTranscribe(text)
     };
+
+    
 
     recognition.onerror = (e) => {
       setStatus("Error: " + e.error);
@@ -45,7 +49,7 @@ export default function VoiceTest() {
         disabled={listening}
         style={{
           padding: "12px 24px",
-          fontSize: "15px",
+          fontSize: "2rem",
           background: listening ? "#4b4b4bff" : "#efbbfdff",
           color: "white",
           border: "none",
@@ -56,11 +60,11 @@ export default function VoiceTest() {
         {listening ? "Listening..." : "Start Listening"}
       </button>
 
-      <div style={{ marginTop: "20px", fontSize: "22px", fontStyle: "Verdana" }}>
+      {/* <div style={{ marginTop: "20px", fontSize: "22px", fontStyle: "Verdana" }}>
         {transcript ? `You said: "${transcript}"` : null }
-      </div>
+      </div> */}
 
-      <p style={{ color: "gray" }}>{status}</p>
+      <p style={{ color: "gray", fontSize: "2rem" }}>{status}</p>
     </div>
   );
 }

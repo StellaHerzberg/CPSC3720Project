@@ -133,6 +133,11 @@ function App() {
           <button type = "submit" disabled = {loading}>Ask!</button>
         </form>
 
+
+        <VoiceTest onTranscribe = {(text) => {
+          setQuery(text);
+        }} />
+
         {loading && <p>Loading...</p>}
         {error && <p style = {{ color : 'black' }}>{error}</p>}
 
@@ -168,12 +173,12 @@ function App() {
           </li> 
         ))}
         </ul>
-        <div style={{ marginBottom: "20px" }}>
+        {/* <div style={{ marginBottom: "20px" }}>
           <h2>Voice Input</h2>
             <p>Click the mic and talk. Whatever you say will hopefully print out below, fingers crossed</p>
           <VoiceTest/> 
-        </div>
-        <AITest/>
+        </div> */}
+        {/* <AITest/> */}
     </div>
     );
 }
