@@ -1,6 +1,13 @@
+// React component provides simple frontend interface for testing LLM requests through
+// callOllana() function. Allows users to send to Ollama API and displays generated responses.
+// Used to verify integration and responses.
+
 import React, { useState } from 'react';
 import { callOllama } from './ollama.js';
 
+// Testing interact for sending text prompts to Ollama API. User enters request and component calls 
+// callOllama to get AI generated response. Result is displayed.
+// Returns - React component with input, button, and display area.
 export default function AITest() {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
