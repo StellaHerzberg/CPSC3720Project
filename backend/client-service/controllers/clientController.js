@@ -19,7 +19,7 @@
 //something wrong with insert
 // const { insertDataIntoDatabase, connectToDatabase } = require('../models/clientModel');
 
-import { getEvents, purchaseTicket } from '../models/clientModel.js';
+const { getEvents, purchaseTicket } = require('../models/clientModel');
 
 // Handles request to retrieve events from database and returns as JSON response
 // Params: req - the request object
@@ -27,30 +27,11 @@ import { getEvents, purchaseTicket } from '../models/clientModel.js';
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
 export const listEvents = async (req, res) => {
-    // OLD VERSION = WORKS MOSTLY
-    // try {
-    //     const events = await getEvents();
-    //     res.json(events);
-    // } catch (err) {
-    //     res.status(500).json({error: "Failed to fetch events", details: err.message})
-    // }
-
     try {
         const events = await getEvents();
-
-        if (res) {
-            return res.status(200).json(events);
-        }
-
-        return events;
-    }
-
-    catch (error) {
-        if (res) {
-            return res.status(500).json({error: "Failed to fetch events", })
-        } else {
-            throw error;
-        }
+        res.json(events);
+    } catch (err) {
+        res.status(500).json({error: "Failed to fetch events", details: err.message})
     }
 };
 
@@ -60,18 +41,17 @@ export const listEvents = async (req, res) => {
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
-export const handleTicketPurchase = async (req, res) => {
-    
-    const id = req.params.id;
-
-    try {
-        const ticketsRemaining = await purchaseTicket(id);
-        res.json({success: true, ticketsRemaining})
-    } catch (err) {
-        res.status(400).json({error: err.message});
-    }
+const handleTicketPurchase = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const ticketsRemaining = await purchaseTicket(id);
+    res.json({ success: true, ticketsRemaining });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
 
+module.exports = { listEvents, handleTicketPurchase };
 
 
 
