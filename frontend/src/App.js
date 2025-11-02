@@ -139,14 +139,14 @@ function App() {
         {events.length > 0 ? (
           <section> 
             <h2>Available events</h2>
-            <ul>
+            {/* <ul>
               {events.map((ev, i) => (
                 <li key = {ev.id ?? i}>
                   <strong>{ev.eventName ?? 'Unnamed event'}</strong>
                   {ev.available !== undefined ? ` - ${ev.available} available` : ''}
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </section>
         ) : (
           message && (

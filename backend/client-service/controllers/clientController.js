@@ -19,7 +19,8 @@
 //something wrong with insert
 // const { insertDataIntoDatabase, connectToDatabase } = require('../models/clientModel');
 
-const { getEvents, purchaseTicket } = require('../models/clientModel');
+// const { getEvents, purchaseTicket } = require('../models/clientModel');
+import { getEvents, purchaseTicket } from '../models/clientModel.js';
 
 // Handles request to retrieve events from database and returns as JSON response
 // Params: req - the request object
@@ -29,9 +30,13 @@ const { getEvents, purchaseTicket } = require('../models/clientModel');
 export const listEvents = async (req, res) => {
     try {
         const events = await getEvents();
-        res.json(events);
+        if (res && typeof res.json === 'function') {
+            return res.json(events);
+        }
+        
+        return events;
     } catch (err) {
-        res.status(500).json({error: "Failed to fetch events", details: err.message})
+        return res.status(500).json({error: "Failed to fetch events", details: err.message})
     }
 };
 
@@ -41,7 +46,7 @@ export const listEvents = async (req, res) => {
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
-const handleTicketPurchase = async (req, res) => {
+export const handleTicketPurchase = async (req, res) => {
   const id = req.params.id;
   try {
     const ticketsRemaining = await purchaseTicket(id);
@@ -51,7 +56,7 @@ const handleTicketPurchase = async (req, res) => {
   }
 };
 
-module.exports = { listEvents, handleTicketPurchase };
+// module.exports = { listEvents, handleTicketPurchase };
 
 
 
