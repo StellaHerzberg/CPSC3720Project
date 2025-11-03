@@ -20,6 +20,7 @@ export default function VoiceTest({onTranscribe}) {
     osc.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + 0.15);
+ 
 
     setListening(true);
     setStatus("Listening...");

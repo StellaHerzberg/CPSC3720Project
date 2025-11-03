@@ -33,16 +33,31 @@ function App() {
 
   //Speech helper function for accessiblity
   const speakText = (text, opts = {}) => {
-    if (!window.speechSyntehsis) return;
+    if (!window.speechSynthesis) return;
         try {
           window.speechSynthesis.cancel();
-
         }
         catch {}
         const utterance = new SpeechSynthesisUtterance(String(text));
         utterance.rate = opts.rate ?? 1;
         utterance.pitch = opts.pitch ?? 1;
-        window.speechSynthesis.speak(utterance);
+        const pickVoice = (voices) => voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
+        const voices = window.speechSynthesis.getVoices()
+        if (voices && voices.length > 0) {
+          utterance.voice = pickVoice(voices);
+          window.speechSynthesis.speak(utterance);
+          return;
+        }
+        // window.speechSynthesis.spe
+        // ak(utterance);
+
+        const onVoicesChanged = () => {
+          const v = window.speechSynthesis.getVoices();
+          utterance.voice = pickVoice(v);
+          window.speechSynthesis.speak(utterance);
+          window.speechSynthesis.onvoiceschanged = null;
+        }
+        window.speechSynthesis.onvoicechanges = onVoicesChanged;
   }
 
   useEffect(() => {
@@ -202,7 +217,8 @@ function App() {
               ))}
             </ul> */}
             <button onClick={() => {
-              const summary = `Reading ${events.length} events. ${events.map(ev => `${ev.eventName} on ${ev.eventDate}`).join('. ')}`;
+              const summary = `Reading ${events.length} events. ${events.map(ev => `${ev.eventName} on ${ev.eventDate}. This event has ${ev.numTickets} tickets remaining.`).join('. ')}`;
+              console.log(summary);
               speakText(summary);
             }}>Read events</button>
             <button onClick={() => { try { window.speechSynthesis.cancel(); } catch {} }}>Stop</button>
