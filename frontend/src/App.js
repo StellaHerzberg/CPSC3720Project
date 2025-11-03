@@ -9,12 +9,6 @@ import VoiceTest from "./Voice";
 // Returns: the webpage displaying all available events and buttons
 // Side effects: indicates network request on component mount to get event data and update state when 
 // necessary.
-
-
-
-
-
-
 function App() {
   const [events, setEvents] = useState([]);
   const [query, setQuery] = useState('');
@@ -107,7 +101,8 @@ function App() {
         })))
       }
       else {
-        setMessage(JSON.stringify(data));
+        // setMessage(JSON.stringify(data));
+        setMessage("Your input was unable to be parsed. Please enter your desired event in a similar format to the provided example: I want to book two tickets to the upcoming jazz concert.");
       }
       } else {
         const text = await response.text();
@@ -228,7 +223,7 @@ function App() {
           message && (
             <section> 
                 <h2>Ticket Booking Assistant</h2>
-                <pre style = {{ whiteSpace: 'pre-wrap' }}>{message}</pre>
+                <pre style = {{ whiteSpace: 'pre-wrap', fontSize: '1.7rem'}}>{message}</pre>
             </section>
           )
         )}

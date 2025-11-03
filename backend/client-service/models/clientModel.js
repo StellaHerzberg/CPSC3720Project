@@ -77,26 +77,61 @@ const purchaseTicket = async (id, qty = 1) => {
     if (qty <= 0) return Promise.reject(new Error("Ticket quantity is invalid"));
 
     return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM events WHERE id = ?', [id], (err, event) => {
+        // db.get('SELECT * FROM events WHERE id = ?', [id], (err, event) => {
 
-            if (err) return reject(err);
-            if (!event) return reject(new Error("Event not found."));
-            if (event.numTickets <= 0) return reject(new Error("Event is sold out."));
-            if (event.numTickets < qty) return reject(new Error("Not enough tickets available."));
+        //     if (err) return reject(err);
+        //     if (!event) return reject(new Error("Event not found."));
+        //     if (event.numTickets <= 0) return reject(new Error("Event is sold out."));
+        //     if (event.numTickets < qty) return reject(new Error("Not enough tickets available."));
 
-            const ticketsRemaining = event.numTickets - qty;
+        //     const ticketsRemaining = event.numTickets - qty;
 
-            db.run(
-                'UPDATE events SET numTickets = ? WHERE id = ?', 
-                [ticketsRemaining, id], 
-                function(err) {
-                    if (err) return reject(err);
-                    resolve(ticketsRemaining);
-                }
-            );
-        });
+        //     db.run(
+        //         'UPDATE events SET numTickets = ? WHERE id = ?', 
+        //         [ticketsRemaining, id], 
+        //         function(err) {
+        //             if (err) return reject(err);
+        //             resolve(ticketsRemaining);
+        //         }
+
+        //     );
+        // });
+
+        db.serialize(() => {
+            db.run('BEGIN IMMEDIATE TRANSACTION;', function (beginErr) {
+                if (beginErr) return reject(beginErr);
+
+                db.get('SELECT * FROM events WHERE id = ?', [id], (selectErr, row) => {
+                    if (selectErr) {
+                        return db.run('ROLLBACK;', () => reject(selectErr));
+                    }
+                    if (!row) {
+                        return db.run('ROLLBACK;', () => reject(new Error("Event not found.")));
+                    }
+                    const availableTickets = Number(row.numTickets || 0);
+                    if (availableTickets < qty) {
+                        return db.run('ROLLBACK;', () => reject(new Error("Not enough tickets available.")));
+                    }
+
+                    const remainingTickets = availableTickets - qty;
+                    db.run('UPDATE events SET numTickets = ? WHERE id = ?', [remainingTickets, id], function (updateErr) {
+                        if (updateErr) {
+                            return db.run('ROLLBACK;', () => reject(updateErr));
+                        }
+
+                        db.run('COMMIT;', (commitErr) => {
+                            if (commitErr) {
+                                return db.run('ROLLBACK;', () => reject(commitErr));
+                            }
+                            resolve(remainingTickets);
+                        })
+
+                    })
+                })
+            }
+        )
     });
-}
+})};
 
 
 
