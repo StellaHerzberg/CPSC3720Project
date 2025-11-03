@@ -20,14 +20,14 @@
 // const { insertDataIntoDatabase, connectToDatabase } = require('../models/clientModel');
 
 // const { getEvents, purchaseTicket } = require('../models/clientModel');
-const { getEvents, purchaseTicket } = require('../models/clientModel.js');
+import { getEvents, purchaseTicket } from '../models/clientModel.js';
 
 // Handles request to retrieve events from database and returns as JSON response
 // Params: req - the request object
 // Params: res - response object to sent retrieved event 
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
-const listEvents = async (req, res) => {
+export const listEvents = async (req, res) => {
     try {
         const events = await getEvents();
         if (res && typeof res.json === 'function') {
@@ -46,22 +46,14 @@ const listEvents = async (req, res) => {
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
-const handleTicketPurchase = async (req, res) => {
-  console.log("Incoming body:", req.body);
-  console.log("Incoming params:", req.params);
-  console.log("Incoming query:", req.query);
-  const id = req.params.id || req.body.eventId;
+export const handleTicketPurchase = async (req, res) => {
+  const id = req.params.id;
   try {
-
-    const qty = Number(req.body.tickets ?? req.query.tickets ?? 1) || 1;
-    const ticketsRemaining = await purchaseTicket(id, qty);
+    const ticketsRemaining = await purchaseTicket(id);
     res.json({ success: true, ticketsRemaining });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-module.exports = { listEvents, handleTicketPurchase };
-
-
-
+// module.exports = { listEvents, handleTicketPurchase };
