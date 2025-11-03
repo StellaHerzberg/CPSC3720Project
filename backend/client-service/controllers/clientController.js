@@ -47,13 +47,18 @@ export const listEvents = async (req, res) => {
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
 export const handleTicketPurchase = async (req, res) => {
-  const id = req.params.id;
+  console.log("Incoming body:", req.body);
+  console.log("Incoming params:", req.params);
+  console.log("Incoming query:", req.query);
+  const id = req.params.id || req.body.eventId;
   try {
-    const ticketsRemaining = await purchaseTicket(id);
+
+    const qty = Number(req.body.tickets ?? req.query.tickets ?? 1) || 1;
+    const ticketsRemaining = await purchaseTicket(id, qty);
     res.json({ success: true, ticketsRemaining });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// module.exports = { listEvents, handleTicketPurchase };
+// module.exports = { listEvents, handleTicketPurchas
