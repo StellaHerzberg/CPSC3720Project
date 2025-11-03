@@ -169,7 +169,7 @@ export const handleOllama = async (req, res) => {
             return res.status(200).type('text/plain').send(instruction);
         }
 
-        return res.status(200).json({events: matched});
+        return res.status(200).json({events: matched, tickets: parsed.tickets ?? 0, intent: parsed.intent ?? null});
 
 
 

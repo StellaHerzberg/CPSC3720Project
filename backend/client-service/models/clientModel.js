@@ -68,10 +68,13 @@ const getEvents = async () => {
 // Handles purchase of a single ticket for a specified event. Function retrieves event from the table
 // verifies that tickets are available, manipulates number of tickers and updates database
 // Params: id - unique ID of event
+//         qty - number of tickets to purchase (default 1)  
 // Returns: Promise<number> - promise resolves to updated number of remaining tickets after purchase
 // Side Effects: reads and updates table in database. Decrements numTickets column if no error.
-const purchaseTicket = async (id) => {
+const purchaseTicket = async (id, qty = 1) => {
     const db = connectToDatabase();
+    qty = Number(qty) || 1;
+    if (qty <= 0) return Promise.reject(new Error("Ticket quantity is invalid"));
 
     return new Promise((resolve, reject) => {
         db.get('SELECT * FROM events WHERE id = ?', [id], (err, event) => {
@@ -79,8 +82,9 @@ const purchaseTicket = async (id) => {
             if (err) return reject(err);
             if (!event) return reject(new Error("Event not found."));
             if (event.numTickets <= 0) return reject(new Error("Event is sold out."));
+            if (event.numTickets < qty) return reject(new Error("Not enough tickets available."));
 
-            const ticketsRemaining = event.numTickets - 1;
+            const ticketsRemaining = event.numTickets - qty;
 
             db.run(
                 'UPDATE events SET numTickets = ? WHERE id = ?', 
