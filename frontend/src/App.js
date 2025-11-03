@@ -192,8 +192,7 @@ function App() {
         {events.map((event) => (
           <li role="list" key={event.id}>
             {event.eventName} - {event.eventDate}{' '}
-              <button onClick={() => buyTicket(event.eventName, event.id, event.aiTickets ?? 1)}>Purchase Event
-                Tickets</button> - Tickets Left: {event.numTickets} 
+              <button onClick={() => buyTicket(event.eventName, event.id, event.aiTickets ?? 1)}>Confirm Event Booking</button> - Tickets Left: {event.numTickets} 
           </li> 
         ))}
         </ul>
