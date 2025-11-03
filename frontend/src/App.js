@@ -31,6 +31,31 @@ function App() {
     .catch((err) => console.error(err));
   }, [])
 
+  //Speech helper function for accessiblity
+  const speakText = (text, opts = {}) => {
+    if (!window.speechSyntehsis) return;
+        try {
+          window.speechSynthesis.cancel();
+
+        }
+        catch {}
+        const utterance = new SpeechSynthesisUtterance(String(text));
+        utterance.rate = opts.rate ?? 1;
+        utterance.pitch = opts.pitch ?? 1;
+        window.speechSynthesis.speak(utterance);
+  }
+
+  useEffect(() => {
+    if (events && events.length > 0) {
+      const summary = `Found ${events.length} event${events.length > 1 ? 's' : ''}. ` +
+        events.map(ev => `${ev.eventName}, on ${ev.eventDate}, with ${ev.numTickets} tickets remaining. `).join(' ');
+      speakText(summary);
+      } else if (message) {
+        speakText(message);
+      }
+  }, [events, message]);
+  
+
   async function handleRequest(e) {
     e.preventDefault();
     setLoading(true);
@@ -176,6 +201,12 @@ function App() {
                 </li>
               ))}
             </ul> */}
+            <button onClick={() => {
+              const summary = `Reading ${events.length} events. ${events.map(ev => `${ev.eventName} on ${ev.eventDate}`).join('. ')}`;
+              speakText(summary);
+            }}>Read events</button>
+            <button onClick={() => { try { window.speechSynthesis.cancel(); } catch {} }}>Stop</button>
+          
           </section>
         ) : (
           message && (
