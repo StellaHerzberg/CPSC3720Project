@@ -5,7 +5,7 @@ import App from "./App";
 
 test("renders the website title correctly", () => {
   render(<App />);
-  const titleElement = screen.getByText(/Clemson Campus Events/i);
+  const titleElement = screen.getByText(/Welcome to Tiger Tix!/i);
   expect(titleElement).toBeInTheDocument();
 });
 
