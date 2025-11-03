@@ -11,10 +11,14 @@ app.use(cors());
 app.use(express.json())
 app.use('/api', routes);
 
+module.exports = app
 
 // app.post()
 
-// Client-service runs on port 6001
-const PORT = 7001;
-
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+// Client-service runs on port 7001
+if (require.main === module) {
+  const PORT = 7001;
+  app.listen(PORT, () =>
+    console.log(`Server running at http://localhost:${PORT}`)
+  );
+}
