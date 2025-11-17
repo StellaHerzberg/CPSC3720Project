@@ -4,6 +4,41 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import VoiceTest from "./Voice";
 
+function LoginForm() {
+  return (
+    <form>
+      <title>Welcome Back! Log In to TigerTix:</title>
+        <label>Username:
+          <input name = "username" type = "text"></input>
+        </label>
+        <label>Password:
+          <input name = "password" type = "text"></input>
+        </label>
+
+    </form>
+  );
+
+}
+
+function RegistrationForm() {
+  return (
+    <form>
+      <title>Register for TigerTix Below:</title>
+        <label>Username:
+          <input name = "username" type = "text"></input>
+        </label>
+        <label>Password:
+          <input name = "password" type = "text"></input>
+        </label>
+
+
+    </form>
+
+  );
+}
+
+
+
 
 // Serves as root componenet of web app. Fetches the event data, displays events, handles user interactions.
 // Returns: the webpage displaying all available events and buttons
