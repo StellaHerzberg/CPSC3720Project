@@ -2,6 +2,8 @@
 Sets colors, font sizes, alignments, etc. */
 .App {
   text-align: center;
+  /* background-color: #E1C6AA; */
+  background-color: #FFE1C2;
 }
 
 .App-logo {

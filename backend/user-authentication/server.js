@@ -2,18 +2,17 @@
 // requests from frontend then handles it accordingly to mount all routes defined in clientRoutes.
 // Client-service allows users to view events and purchase tickets.
 
-// WILL NEED TO CHANGE, COPIED BASIC SERVER FROM PROVIDED TEMPLATE
-// CLIENT SERVER
 
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const routes = require('./routes/clientRoutes');
+const routes = require('./routes/uaRoutes');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', routes);
+app.use('/register', routes);
+app.use('/login', routes);
 
 
 module.exports = app;

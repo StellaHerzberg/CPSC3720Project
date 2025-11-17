@@ -7,11 +7,12 @@ import VoiceTest from "./Voice";
 function LoginForm() {
   return (
     <form>
-      <title>Welcome Back! Log In to TigerTix:</title>
-        <label>Username:
-          <input name = "username" type = "text"></input>
+      <h2>Welcome Back! Log In to TigerTix:</h2>
+        <label>Email:   
+          <input name = "email" type = "text"></input>
         </label>
-        <label>Password:
+        <br />
+        <label>Password:    
           <input name = "password" type = "text"></input>
         </label>
 
@@ -23,11 +24,12 @@ function LoginForm() {
 function RegistrationForm() {
   return (
     <form>
-      <title>Register for TigerTix Below:</title>
-        <label>Username:
-          <input name = "username" type = "text"></input>
+      <h2>Register for TigerTix Below:</h2>
+        <label>Email:   
+          <input name = "email" type = "text"></input>
         </label>
-        <label>Password:
+        <br />
+        <label>Password:   
           <input name = "password" type = "text"></input>
         </label>
 
@@ -213,7 +215,29 @@ function App() {
   //Displays page title, list of events with all the event information plus operations
   return (
     <div className="App">
-      <h1 role="banner">Welcome to Tiger Tix!</h1>
+      {true ? (
+        
+        <>
+
+      
+      <h1 role="banner" style = {{"textAlign":"center"}}>Welcome to Tiger Tix!</h1>
+          {/* <div style = {{"float":"right", "fontSize" : "25px", "paddingRight":"30px", "whiteSpace":"pre"}}>
+          { true ? (
+            <>
+            <span>Logged in as test  </span>
+            <button>Log Out</button>
+            </>
+          ) : (
+            <>
+            <button type = "submit">Login</button>
+            <button type = "submit">Sign Up</button>
+            </>
+          )}
+        </div> */}
+      {/* <h3> 
+        <button type = "submit">Login</button>
+        <button type = "submit">Sign Up</button>
+      </h3> */}
 
       <main> 
         <form onSubmit = {handleRequest}>
@@ -279,9 +303,29 @@ function App() {
           <VoiceTest/> 
         </div> */}
         {/* <AITest/> */}
+
+
+         </>
+      ) : (
+        <div>
+          <LoginForm/>
+          <br />
+          <br />
+          <br />
+          <hr></hr>
+          <h3 style={{"fontSize":"40px"}}>Not registered? Sign up for TigerTix below!
+            <RegistrationForm/>
+          </h3>
+        </div>
+      )};
+
+
     </div>
-    );
-}
+        
+   
+  
+
+    )}
 
 
 export default App;

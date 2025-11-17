@@ -20,7 +20,7 @@
 // const { insertDataIntoDatabase, connectToDatabase } = require('../models/clientModel');
 
 // const { getEvents, purchaseTicket } = require('../models/clientModel');
-import { getEvents, purchaseTicket } from '../models/clientModel.js';
+import { getEvents, purchaseTicket } from '../models/uaModel.js';
 
 // Handles request to retrieve events from database and returns as JSON response
 // Params: req - the request object
