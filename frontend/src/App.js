@@ -52,6 +52,7 @@ function App() {
   const[message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   // Gets event data from API when it first mounts. Ensures list is populated when page loads.
   // Sends request to backend and updates local state

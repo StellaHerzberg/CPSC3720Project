@@ -9,7 +9,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { listEvents, handleTicketPurchase } = require('../controllers/uaController');
-router.get('/events', listEvents);
-router.post('/events/:id/purchase', handleTicketPurchase)
+const { userLogin, userRegister } = require('../controllers/uaController');
+router.post('/login', userLogin);
+router.post('/register', userRegister)
 module.exports = router;

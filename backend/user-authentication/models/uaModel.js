@@ -6,6 +6,7 @@
 // import {fileURLToPath} from "url";
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const bcrypt = require("bcryptjs");
 
 
 // Function to create and return a variable connected to the database
@@ -52,18 +53,18 @@ function updateDataInDatabase(db, attributeToUpdate, newData, dataIndex) {
 // Params: None
 // Returns: Promise<Array<Object>> - resolves to an array of records corresponding to row in table
 // Side Effects: opens connection to database and logs the connection
-const getEvents = async () => {
-    const db = connectToDatabase();
+// const getEvents = async () => {
+//     const db = connectToDatabase();
 
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM events';
-        db.all(sql, [], (err,rows) => {
-            if (err) return reject(err);
+//     return new Promise((resolve, reject) => {
+//         const sql = 'SELECT * FROM events';
+//         db.all(sql, [], (err,rows) => {
+//             if (err) return reject(err);
 
-            resolve(rows);
-        });
-    });
-};
+//             resolve(rows);
+//         });
+//     });
+// };
 
 // Handles purchase of a single ticket for a specified event. Function retrieves event from the table
 // verifies that tickets are available, manipulates number of tickers and updates database
@@ -71,11 +72,13 @@ const getEvents = async () => {
 //         qty - number of tickets to purchase (default 1)  
 // Returns: Promise<number> - promise resolves to updated number of remaining tickets after purchase
 // Side Effects: reads and updates table in database. Decrements numTickets column if no error.
-const purchaseTicket = async (id, qty = 1) => {
+// const purchaseTicket = async (id, qty = 1) => {
    
-    };
+//     };
+
+const addUser = async (username, password) => {}
+const verifyUser = async (password) => {}
+const verifyPassword = async (username, password) => {}
 
 
-
-
-module.exports = { getEvents, purchaseTicket }
+module.exports = { addUser, verifyUser, verifyPassword }

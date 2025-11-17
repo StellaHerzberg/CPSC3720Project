@@ -27,7 +27,7 @@ import { getEvents, purchaseTicket } from '../models/uaModel.js';
 // Params: res - response object to sent retrieved event 
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
-export const listEvents = async (req, res) => {
+export const userLogin = async (req, res) => {
   
 };
 
@@ -37,7 +37,7 @@ export const listEvents = async (req, res) => {
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
-export const handleTicketPurchase = async (req, res) => {
+export const userRegister = async (req, res) => {
   
 };
 

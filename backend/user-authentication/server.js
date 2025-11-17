@@ -11,8 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/register', routes);
-app.use('/login', routes);
+app.use('/api/authentication', routes);
 
 
 module.exports = app;
