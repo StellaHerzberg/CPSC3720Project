@@ -1,3 +1,6 @@
+process.env.NODE_ENV = "test";
+
+
 const request = require("supertest");
 const app = require("../server.js");
 
@@ -35,10 +38,15 @@ describe("Client Service API", () => {
     const mockEvent = eventRes.body.find((e) => e.eventName === Event);
 
     //Purchase one ticket
-    const purchaseRes = await request(app).post(`/api/events/${mockEvent.id}/purchase`);
-    expect(purchaseRes.statusCode).toBe(200);
-    expect(purchaseRes.body.success).toBe(true);
-    expect(purchaseRes.body.ticketsRemaining).toBe(tickets-1);
+  const purchaseRes = await request(app)
+  .post(`/api/events/${mockEvent.id}/purchase`)
+  .send({})        // required
+  .set("Content-Type", "application/json");
+
+expect(purchaseRes.statusCode).toBe(200);
+expect(purchaseRes.body.success).toBe(true);
+expect(purchaseRes.body.ticketsRemaining).toBe(tickets - 1);
+
 
     db.close();
   });
