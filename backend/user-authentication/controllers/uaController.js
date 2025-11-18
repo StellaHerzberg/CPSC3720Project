@@ -48,7 +48,7 @@ export const userRegister = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        addUser(email, hashedPassword); // maybe need to await?
+        await addUser(email, hashedPassword); // maybe need to await?
 
         return res.status(201).json({message: "You've successfully registered for TigerTix!"});
 
@@ -69,7 +69,7 @@ export const userLogin = async (req, res) => {
     try {
         const {email, password} = req.body;
 
-        const user = verifyPassword(email, password);
+        const user = await verifyPassword(email, password);
 
         if (!user) {
             return res.status(400).json({ message: "You entered an invalid email or password." });
@@ -84,11 +84,11 @@ export const userLogin = async (req, res) => {
         res.cookie("userAuthenticationToken", token, {
             httpOnly: true,
             secure: false,
-            maxAge: 30 * 60 * 1200;
+            maxAge: 30 * 60 * 1000
         });
 
         return res.json({message: "TigerTix login successful!"});
-        
+
 
 
 
@@ -97,6 +97,29 @@ export const userLogin = async (req, res) => {
         return res.status(500).json({message: "Server error with logging in"});
     }
   
+};
+
+export const userLogout = async (req, res) => {
+    res.clearCookie("userAuthenticationToken");
+    res.json({message: "Logged out of TigerTix successfully!"});
+};
+
+export const verifyUsingJWT = async (req, res, next) => {
+    const token = req.cookies?.userAuthenticationToken;
+
+    if (!token) {
+        return res.status(401).json({message: "Action is not currently allowed via failed authentication."});
+    }
+
+    try {
+        const decodedUser = jwt.verify(token, JWT_VAL);
+        req.user = decodedUser;
+        return next();
+
+    } catch (err) {
+        return res.status(401).json({message: "User's JWT token either invalid or expired."});
+    }
+
 };
 
 // module.exports = { listEvents, handleTicketPurchas
