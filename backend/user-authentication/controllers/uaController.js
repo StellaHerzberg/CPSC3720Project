@@ -25,8 +25,8 @@ const bcrypt = require("bcryptjs");
 const { connectToDatabase, queryFullDatabase, createDatabaseTable, addUser, getUser, verifyPassword } = require('../models/uaModel.js');
 
 // Constants used for jwt
-const EXPIRATION = "30m";
-const JWT_TOKEN = "move_to_something_else_later";
+const EXPIRATION_VAL = "30m";
+const JWT_VAL = "waffle-house";
 
 // Handles request to retrieve events from database and returns as JSON response
 // Params: req - the request object
@@ -65,6 +65,37 @@ export const userRegister = async (req, res) => {
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
 export const userLogin = async (req, res) => {
+
+    try {
+        const {email, password} = req.body;
+
+        const user = verifyPassword(email, password);
+
+        if (!user) {
+            return res.status(400).json({ message: "You entered an invalid email or password." });
+        }
+
+        const token = jwt.sign(
+            {id: user.id, email: user.email},
+            JWT_VAL,
+            {expiresIn : EXPIRATION_VAL}
+        );
+
+        res.cookie("userAuthenticationToken", token, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 30 * 60 * 1200;
+        });
+
+        return res.json({message: "TigerTix login successful!"});
+        
+
+
+
+    } catch (err) {
+        console.error("Login error: ", err);
+        return res.status(500).json({message: "Server error with logging in"});
+    }
   
 };
 
