@@ -20,15 +20,42 @@
 // const { insertDataIntoDatabase, connectToDatabase } = require('../models/clientModel');
 
 // const { getEvents, purchaseTicket } = require('../models/clientModel');
-import { getEvents, purchaseTicket } from '../models/uaModel.js';
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { connectToDatabase, queryFullDatabase, createDatabaseTable, addUser, getUser, verifyPassword } = require('../models/uaModel.js');
+
+// Constants used for jwt
+const EXPIRATION = "30m";
+const JWT_TOKEN = "move_to_something_else_later";
 
 // Handles request to retrieve events from database and returns as JSON response
 // Params: req - the request object
 // Params: res - response object to sent retrieved event 
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
-export const userLogin = async (req, res) => {
-  
+export const userRegister = async (req, res) => {
+    try {
+        const {email, password} = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({message: "Email and password required to register for TigerTix."})
+        }
+
+        const alreadyExists = await getUser(email);
+        if (alreadyExists) {
+            return res.status(400).json({message: "You've already registered for TigerTix with the entered credentials!"});
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        addUser(email, hashedPassword); // maybe need to await?
+
+        return res.status(201).json({message: "You've successfully registered for TigerTix!"});
+
+    } catch (err) {
+        console.error("Error detected in userRegister: ", err);
+        return res.status(500).json({message: "Server error"})
+    }
 };
 
 // Handles request to purchase ticket for an event. Function extracts event ID, calls purchaseTicket() to decrement,
@@ -37,7 +64,7 @@ export const userLogin = async (req, res) => {
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
-export const userRegister = async (req, res) => {
+export const userLogin = async (req, res) => {
   
 };
 
