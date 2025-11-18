@@ -314,34 +314,18 @@ function App() {
         
         <>
 
-      
-      <h1 role="banner" style = {{"textAlign":"center"}}>Welcome to Tiger Tix!</h1>
+     
       <div style = {{"float":"right", "fontSize":"25px", "paddingRight":"30px", "whiteSpace":"pre"}}>
         {loggedIn ? (
           <>
           <span>Logged in as {user?.email}</span>
-          <button onClick = {logout}>Log Out</button>
+          <button onClick = {logout} style = {{"marginLeft":"20px"}}>Log Out</button>
           </>
         ) : null}
       </div>
+       <h1 role="banner" style = {{"textAlign":"center"}}>Welcome to Tiger Tix!</h1>
       
-          {/* <div style = {{"float":"right", "fontSize" : "25px", "paddingRight":"30px", "whiteSpace":"pre"}}>
-          { true ? (
-            <>
-            <span>Logged in as test  </span>
-            <button>Log Out</button>
-            </>
-          ) : (
-            <>
-            <button type = "submit">Login</button>
-            <button type = "submit">Sign Up</button>
-            </>
-          )}
-        </div> */}
-      {/* <h3> 
-        <button type = "submit">Login</button>
-        <button type = "submit">Sign Up</button>
-      </h3> */}
+         
 
       <main> 
         <form onSubmit = {handleRequest}>
@@ -366,14 +350,7 @@ function App() {
         {events.length > 0 ? (
           <section> 
             <h2>Available events</h2>
-            {/* <ul>
-              {events.map((ev, i) => (
-                <li key = {ev.id ?? i}>
-                  <strong>{ev.eventName ?? 'Unnamed event'}</strong>
-                  {ev.available !== undefined ? ` - ${ev.available} available` : ''}
-                </li>
-              ))}
-            </ul> */}
+          
             <button onClick={() => {
               const summary = `Reading ${events.length} events. ${events.map(ev => `${ev.eventName} on ${ev.eventDate}. This event has ${ev.numTickets} tickets remaining.`).join('. ')}`;
               console.log(summary);
@@ -401,12 +378,7 @@ function App() {
           </li> 
         ))}
         </ul>
-        {/* <div style={{ marginBottom: "20px" }}>
-          <h2>Voice Input</h2>
-            <p>Click the mic and talk. Whatever you say will hopefully print out below, fingers crossed</p>
-          <VoiceTest/> 
-        </div> */}
-        {/* <AITest/> */}
+   
 
 
          </>

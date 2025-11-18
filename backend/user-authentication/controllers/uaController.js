@@ -25,7 +25,7 @@ const bcrypt = require("bcryptjs");
 const { connectToDatabase, queryFullDatabase, createDatabaseTable, addUser, getUser, verifyPassword } = require('../models/uaModel.js');
 
 // Constants used for jwt
-const EXPIRATION_VAL = "30m";
+const EXPIRATION_VAL = "1m";
 const JWT_VAL = "waffle-house";
 
 // Handles request to retrieve events from database and returns as JSON response
@@ -34,7 +34,7 @@ const JWT_VAL = "waffle-house";
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
 const userRegister = async (req, res) => {
-    
+
     try {
         const {email, password} = req.body;
 
