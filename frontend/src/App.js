@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import VoiceTest from "./Voice";
 
-function LoginForm( {setLoggedIn }) {
+function LoginForm( {setLoggedIn, setUser }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,6 +25,7 @@ function LoginForm( {setLoggedIn }) {
 
       if (res.ok) {
         setLoggedIn(true);
+        setUser({email});
       }
       else {
         setError(data.message || "TigerTix login was unsuccessful");
@@ -55,20 +56,57 @@ function LoginForm( {setLoggedIn }) {
 
 }
 
-function RegistrationForm() {
+function RegistrationForm( { setLoggedIn }) {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const register = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      const res = await fetch('http://localhost:8001/api/authentication/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password})
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSuccess('You have successfully registered for TigerTix! You may now log in.');
+        setEmail('');
+        setPassword('');
+      }
+      else {
+        setError(data.message || "Registration for TigerTix was unsuccessful.");
+
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Registration for TigerTix was unsuccessful.");
+    }
+  };
+
   return (
-    <form style={{"fontWeight":"normal"}}>
+    <form onSubmit = {register} style={{"fontWeight":"normal"}}>
       <h2>Sign up for TigerTix Below:</h2>
         <label>Email:   
-          <input name = "email" type = "text" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
+          <input name = "email" value = {email} onChange = {e => setEmail(e.target.value)} type = "text" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
         </label>
         <br />
         <label>Password:   
-          <input name = "password" type = "password" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
+          <input name = "password" value = {password} onChange = {e => setPassword(e.target.value)} type = "password" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
         </label>
         <br />
         <br />
-        <button style={{"padding":"10px", "fontWeight":"bolder"}}>Register!</button>
+        <button type = "submit" style={{"padding":"10px", "fontWeight":"bolder"}}>Register!</button>
+        {error && <p style = {{"color": "red"}}>{error}</p>}
+        {success && <p style = {{"color":"green"}}>{success}</p>}
 
 
     </form>
@@ -90,6 +128,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
   // Gets event data from API when it first mounts. Ensures list is populated when page loads.
   // Sends request to backend and updates local state
@@ -99,6 +138,24 @@ function App() {
     .then((data) => setEvents(data))
     .catch((err) => console.error(err));
   }, [])
+
+  const logout = async () => {
+    try {
+      await fetch ("http://localhost:8001/api/authentication/logout", {
+        method: "POST", 
+        credentials: "include",
+      });
+
+      setLoggedIn(false);
+      setUser(null);
+
+    } catch (err) {
+      console.error("Failed to logout of TigerTix.", err);
+    }
+
+
+
+  }
 
   //Speech helper function for accessiblity
   const speakText = (text, opts = {}) => {
@@ -259,6 +316,15 @@ function App() {
 
       
       <h1 role="banner" style = {{"textAlign":"center"}}>Welcome to Tiger Tix!</h1>
+      <div style = {{"float":"right", "fontSize":"25px", "paddingRight":"30px", "whiteSpace":"pre"}}>
+        {loggedIn ? (
+          <>
+          <span>Logged in as {user?.email}</span>
+          <button onClick = {logout}>Log Out</button>
+          </>
+        ) : null}
+      </div>
+      
           {/* <div style = {{"float":"right", "fontSize" : "25px", "paddingRight":"30px", "whiteSpace":"pre"}}>
           { true ? (
             <>
@@ -346,13 +412,13 @@ function App() {
          </>
       ) : (
         <div style = {{"fontSize":"40px"}}>
-          <LoginForm/>
+          <LoginForm setLoggedIn = {setLoggedIn} setUser = {setUser}/>
           <br />
           <br />
           <br />
           <hr></hr>
           <h3>Not registered?
-            <RegistrationForm/>
+            <RegistrationForm setLoggedIn = {setLoggedIn}/>
           </h3>
         </div>
       )};

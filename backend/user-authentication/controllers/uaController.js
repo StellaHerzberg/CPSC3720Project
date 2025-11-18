@@ -34,6 +34,7 @@ const JWT_VAL = "waffle-house";
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
 const userRegister = async (req, res) => {
+    
     try {
         const {email, password} = req.body;
 
