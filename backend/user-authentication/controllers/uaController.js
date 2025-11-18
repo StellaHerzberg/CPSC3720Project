@@ -33,7 +33,7 @@ const JWT_VAL = "waffle-house";
 // Params: res - response object to sent retrieved event 
 // Return: None because responds with server status
 // Side Effects: Calls getEvents() and sends JSON
-export const userRegister = async (req, res) => {
+const userRegister = async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -64,7 +64,7 @@ export const userRegister = async (req, res) => {
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
 // Side Effects: Modifies "numTickets" in database for event and sends JSON response.
-export const userLogin = async (req, res) => {
+const userLogin = async (req, res) => {
 
     try {
         const {email, password} = req.body;
@@ -99,12 +99,12 @@ export const userLogin = async (req, res) => {
   
 };
 
-export const userLogout = async (req, res) => {
+const userLogout = async (req, res) => {
     res.clearCookie("userAuthenticationToken");
     res.json({message: "Logged out of TigerTix successfully!"});
 };
 
-export const verifyUsingJWT = async (req, res, next) => {
+const verifyUsingJWT = async (req, res, next) => {
     const token = req.cookies?.userAuthenticationToken;
 
     if (!token) {
@@ -122,4 +122,4 @@ export const verifyUsingJWT = async (req, res, next) => {
 
 };
 
-// module.exports = { listEvents, handleTicketPurchas
+module.exports = { userRegister, userLogin, userLogout, verifyUsingJWT }
