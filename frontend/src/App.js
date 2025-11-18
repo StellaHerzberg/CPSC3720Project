@@ -216,7 +216,7 @@ function App() {
   //Displays page title, list of events with all the event information plus operations
   return (
     <div className="App">
-      {true ? (
+      {loggedIn ? (
         
         <>
 
