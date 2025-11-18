@@ -4,17 +4,51 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import VoiceTest from "./Voice";
 
-function LoginForm() {
+function LoginForm( {setLoggedIn }) {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const login = async(e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await fetch('http://localhost:8001/api/authentication/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', 
+        body: JSON.stringify({email, password})
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setLoggedIn(true);
+      }
+      else {
+        setError(data.message || "TigerTix login was unsuccessful");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("TigerTix login was unsuccessful");
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit = {login}>
       <h2>Welcome Back! Log In to TigerTix:</h2>
         <label>Email:   
-          <input name = "email" type = "text"></input>
+          <input name = "email" value = {email} onChange = {e => setEmail(e.target.value)} type = "text" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
         </label>
         <br />
         <label>Password:    
-          <input name = "password" type = "text"></input>
+          <input name = "password" value = {password} onChange = {e => setPassword(e.target.value)} type = "password" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
         </label>
+        <br />
+        <br />
+        <button style={{"padding":"10px", "fontWeight":"bolder"}} type = "submit">Login!</button>
+        {error && <p style = {{"color":"red"}}>{error}</p>}
 
     </form>
   );
@@ -23,15 +57,18 @@ function LoginForm() {
 
 function RegistrationForm() {
   return (
-    <form>
-      <h2>Register for TigerTix Below:</h2>
+    <form style={{"fontWeight":"normal"}}>
+      <h2>Sign up for TigerTix Below:</h2>
         <label>Email:   
-          <input name = "email" type = "text"></input>
+          <input name = "email" type = "text" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
         </label>
         <br />
         <label>Password:   
-          <input name = "password" type = "text"></input>
+          <input name = "password" type = "password" style = {{"fontSize":"40px","marginLeft":"20px"}}></input>
         </label>
+        <br />
+        <br />
+        <button style={{"padding":"10px", "fontWeight":"bolder"}}>Register!</button>
 
 
     </form>
@@ -308,13 +345,13 @@ function App() {
 
          </>
       ) : (
-        <div>
+        <div style = {{"fontSize":"40px"}}>
           <LoginForm/>
           <br />
           <br />
           <br />
           <hr></hr>
-          <h3 style={{"fontSize":"40px"}}>Not registered? Sign up for TigerTix below!
+          <h3>Not registered?
             <RegistrationForm/>
           </h3>
         </div>
