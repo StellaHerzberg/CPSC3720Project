@@ -261,10 +261,18 @@ function App() {
     try {
       const res = await fetch(`http://localhost:6001/api/events/${id}/purchase`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( {tickets: qty })
 
       });
+
+      if (res.status === 401) {
+        setLoggedIn(false);
+        setUser(null);
+        alert("Your TigerTix session has expired. Please login again.");
+        return;
+      }
 
       const headersVar = (res.headers.get('content-type') || '').toLowerCase();
       let data;

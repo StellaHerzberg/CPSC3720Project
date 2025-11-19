@@ -10,6 +10,7 @@
 const express = require('express');
 const router = express.Router();
 const { listEvents, handleTicketPurchase } = require('../controllers/clientController');
+const { verifyUsingJWT } = require('../../user-authentication/controllers/uaController');
 router.get('/events', listEvents);
-router.post('/events/:id/purchase', handleTicketPurchase)
+router.post('/events/:id/purchase', verifyUsingJWT, handleTicketPurchase)
 module.exports = router;
