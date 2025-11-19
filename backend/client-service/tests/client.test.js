@@ -3,6 +3,8 @@ process.env.NODE_ENV = "test";
 
 const request = require("supertest");
 const app = require("../server.js");
+const jwt = require("jsonwebtoken");
+
 
 describe("Client Service API", () => {
   it("GET /api/events returns a list of events", async () => {
@@ -37,11 +39,21 @@ describe("Client Service API", () => {
     const eventRes = await request(app).get("/api/events");
     const mockEvent = eventRes.body.find((e) => e.eventName === Event);
 
+    // Make a mock jwt token so that the test will pass with the protected route
+    const mockToken = jwt.sign(
+                {id: 1, email: "testUser"},
+                'waffle-house',
+                {expiresIn : '30m'}
+            );
+
+
+
     //Purchase one ticket
   const purchaseRes = await request(app)
   .post(`/api/events/${mockEvent.id}/purchase`)
   .send({})        // required
-  .set("Content-Type", "application/json");
+  .set("Content-Type", "application/json")
+  .set("Cookie", [`userAuthenticationToken=${mockToken}`]);
 
 expect(purchaseRes.statusCode).toBe(200);
 expect(purchaseRes.body.success).toBe(true);
