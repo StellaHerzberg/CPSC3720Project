@@ -327,7 +327,8 @@ function App() {
           </>
         ) : null}
       </div>
-       <h1 role="banner" style = {{"textAlign":"center", "whiteSpace":"pre"}}>                                    Welcome to Tiger Tix!</h1>
+      <img src = "/tiger_paw.gif" alt = "Clemson Logo" style = {{"float":"left", "paddingLeft":"70px","height":"10rem", "width":"auto"}}></img>
+       <h1 role="banner" style = {{"textAlign":"center", "whiteSpace":"pre"}}>                      Welcome to Tiger Tix!</h1>
       
          
 

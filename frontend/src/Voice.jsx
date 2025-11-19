@@ -2,7 +2,8 @@ import { useState } from "react";
 
 export default function VoiceTest({onTranscribe}) {
   const [listening, setListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
+  const [, setTranscript] = useState("");
+  // const [setTranscript] = useState("");
   const [status, setStatus] = useState("Click 'Start Listening' to use voice text to search events in the text box above!");
 
   const startListening = () => {
@@ -51,7 +52,8 @@ export default function VoiceTest({onTranscribe}) {
         style={{
           padding: "12px 24px",
           fontSize: "2rem",
-          background: listening ? "#4b4b4bff" : "#efbbfdff",
+          // background: listening ? "#4b4b4bff" : "#efbbfdff",
+          background: listening ? "#2E1A47" : "#522D80",
           color: "white",
           border: "none",
           borderRadius: "8px",
