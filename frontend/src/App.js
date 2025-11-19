@@ -336,12 +336,14 @@ function App() {
         <form onSubmit = {handleRequest}>
           <input 
             type = "text"
-            placeholder = "Enter your desired event!"
+            placeholder = "Type or use voice-to-text to let us know what kind of event and how many tickets you're looking for!"
             value = {query}
             onChange = {(e) => setQuery(e.target.value)}
-            style = {{ width: '60%', fontSize: '25px'}}
-            />
-          <button type = "submit" disabled = {loading}>Ask!</button>
+            style = {{ width: '55%', fontSize: '35px', float: "left", marginLeft: "28rem"}}
+            />         
+          <button type = "submit" disabled = {loading} style = {{"fontSize":"35px", "marginRight":"36rem"}}>Ask!</button>
+          <br />
+          <br />
         </form>
 
 
@@ -354,7 +356,7 @@ function App() {
 
         {events.length > 0 ? (
           <section> 
-            <h2>Available events</h2>
+            <h2 style = {{"textDecoration":"underline"}}>Available Events</h2>
           
             <button onClick={() => {
               const summary = `Reading ${events.length} events. ${events.map(ev => `${ev.eventName} on ${ev.eventDate}. This event has ${ev.numTickets} tickets remaining.`).join('. ')}`;
