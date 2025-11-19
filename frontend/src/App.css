@@ -3,7 +3,7 @@ Sets colors, font sizes, alignments, etc. */
 .App {
   text-align: center;
   /* background-color: #E1C6AA; */
-  background-color: #FFE1C2;
+  /* background-color: #FFE1C2; */
 }
 
 .App-logo {
@@ -70,4 +70,21 @@ h1 {
 h2 {
   font-size: 3rem;
   align-items: center;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* border-width: 20px; */
+  /* border-color: #F56600; */
+  border: 20px solid #522D80;
+  box-shadow: 0 0 0 20px #F56600 inset;
+  pointer-events: none;
 }

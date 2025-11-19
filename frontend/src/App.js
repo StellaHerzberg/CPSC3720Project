@@ -218,12 +218,7 @@ function App() {
       if (Array.isArray(data)) {
         setEvents(data);
       }
-      //   setEvents(data.events.map( ev => ({
-      //     ...ev, 
-      //     aiTickets: data.tickets ?? 1,
-      //     aiIntent: data.intent ?? null
-      //   })))
-      // }
+    
       else if (data?.events && Array.isArray(data.events)) {
         // setEvents(data.events);
         setEvents(data.events.map(ev => ({
@@ -233,7 +228,7 @@ function App() {
         })))
       }
       else {
-        // setMessage(JSON.stringify(data));
+
         setMessage("Your input was unable to be parsed. Please enter your desired event in a similar format to the provided example: I want to book two tickets to the upcoming jazz concert.");
       }
       } else {
@@ -271,6 +266,7 @@ function App() {
         setLoggedIn(false);
         setUser(null);
         alert("Your TigerTix session has expired. Please login again.");
+        window.location.reload();
         return;
       }
 
@@ -285,7 +281,7 @@ function App() {
         alert("Purchase failed: " + text);
         return;
       }
-      // const data = await res.json();
+
 
       // Handles errors
       if (!res.ok) {
@@ -322,16 +318,16 @@ function App() {
         
         <>
 
-     
-      <div style = {{"float":"right", "fontSize":"25px", "paddingRight":"30px", "whiteSpace":"pre"}}>
+      <div style = {{"float":"right", "fontSize":"25px", "paddingRight":"70px", "whiteSpace":"pre"}}>
         {loggedIn ? (
           <>
-          <span>Logged in as {user?.email}</span>
-          <button onClick = {logout} style = {{"marginLeft":"20px"}}>Log Out</button>
+          <br />
+          <span>Logged in as: {user?.email}</span>
+          <button onClick = {() => {logout(); window.location.reload();}} style = {{"marginLeft":"20px"}}>Log Out</button>
           </>
         ) : null}
       </div>
-       <h1 role="banner" style = {{"textAlign":"center"}}>Welcome to Tiger Tix!</h1>
+       <h1 role="banner" style = {{"textAlign":"center", "whiteSpace":"pre"}}>                                    Welcome to Tiger Tix!</h1>
       
          
 
@@ -392,13 +388,15 @@ function App() {
          </>
       ) : (
         <div style = {{"fontSize":"40px"}}>
+          <br />
           <LoginForm setLoggedIn = {setLoggedIn} setUser = {setUser}/>
+          <br />
           <br />
           <br />
           <br />
           <hr></hr>
           <h3>Not registered?
-            <RegistrationForm setLoggedIn = {setLoggedIn}/>
+            <RegistrationForm setLoggedIn = {setLoggedIn} />
           </h3>
         </div>
       )};
