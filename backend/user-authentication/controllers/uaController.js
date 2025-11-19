@@ -1,38 +1,22 @@
-// Controller handles all client-facing operations (retrieving available events and processing 
-// ticket purchases. Connects to the client module layer for database access and returns structures
+// Controller handles all user-authentication operations (handling logins, registrations,
+// and logouts. Connects to the user-authentication module layer for database access and returns structured
 // JSON responsees to the routes.
 
-// NEED TO MODIFY, COPIED FROM PROVIDED CONTROLLER TEMPLATE
-// CLIENT CONTROLLER
 
-// const { getEvents } = require('../models/clientModel').default;
-// const listEvents = (req, res) => {
-// const events = getEvents();
-// res.json(events);
-// };
-
-
-// module.exports = { listEvents };
-
-
-// backend/admin-service/controllers/adminController.js
-//something wrong with insert
-// const { insertDataIntoDatabase, connectToDatabase } = require('../models/clientModel');
-
-// const { getEvents, purchaseTicket } = require('../models/clientModel');
+// Requirements
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { connectToDatabase, queryFullDatabase, createDatabaseTable, addUser, getUser, verifyPassword } = require('../models/uaModel.js');
 
 // Constants used for jwt
-const EXPIRATION_VAL = "1m";
+const EXPIRATION_VAL = "30m";
 const JWT_VAL = "waffle-house";
 
-// Handles request to retrieve events from database and returns as JSON response
+// Handles request to retrieve users from database and returns as JSON response
 // Params: req - the request object
-// Params: res - response object to sent retrieved event 
+// Params: res - response object to send current user
 // Return: None because responds with server status
-// Side Effects: Calls getEvents() and sends JSON
+// Side Effects: Calls getUser() and sends JSON
 const userRegister = async (req, res) => {
 
     try {
@@ -59,12 +43,12 @@ const userRegister = async (req, res) => {
     }
 };
 
-// Handles request to purchase ticket for an event. Function extracts event ID, calls purchaseTicket() to decrement,
-// and returns the number of tickets remaining.
-// Params: req - request object to contain the ID of event being purchased
+// Handles request to login to the website. Function extracts user's email and password, calls verifyPassword() to 
+// validate login, and creates a valid jwt token to be used for authentication.
+// Params: req - request object to contain the email and password of the given user
 // Params: res - response object to send success or error
 // Return: None because responds directly with status
-// Side Effects: Modifies "numTickets" in database for event and sends JSON response.
+// Side Effects: Creates a jsonwebtoken, stores it in a cookie, and sends JSON response.
 const userLogin = async (req, res) => {
 
     try {
@@ -100,11 +84,24 @@ const userLogin = async (req, res) => {
   
 };
 
+
+// Handles request to logout of the website. 
+// Params: req - request object to contain the email and password of the given user
+// Params: res - response object to send success or error
+// Return: None because responds directly with status
+// Side Effects: Clears cookies
 const userLogout = async (req, res) => {
     res.clearCookie("userAuthenticationToken");
     res.json({message: "Logged out of TigerTix successfully!"});
 };
 
+
+// Handles validating secure events with a valid jsonwebtoken.
+// Params: req - request object to contain the email and password of the given user
+// Params: res - response object to send success or error
+// Params: next - object allowing express to go on to the next function called in the app.post request
+// Return: None because responds directly with status
+// Side Effects: Gets the current token from stored cookies, verifies that against cookie for current user
 const verifyUsingJWT = async (req, res, next) => {
     const token = req.cookies?.userAuthenticationToken;
 

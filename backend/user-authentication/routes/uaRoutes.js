@@ -1,8 +1,8 @@
-// This file defines routes for the client-facing side of the
-// application. These endpoints allow clients to retrieve event
-// listings and purchase tickets.
+// This file defines routes for the user authentication side of the
+// application. These endpoints allow users to login, register for the site,
+// and log out once done.
 // Each route delegates request handling to controller functions
-// in clientController.js.
+// in auController.js.
 
 
 

@@ -1,9 +1,7 @@
-// Module defines all database related functions for the client-service. It connects to the shared
-// database and provides methods to read events and handle ticket purchases.
+// Module defines all database related functions for the user-authentication service. It connects to the shared
+// database and provides methods to add users, get users, and verify passwords.
 
-// import sqlite3 from "sqlite3";
-// import path from "path";
-// import {fileURLToPath} from "url";
+
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 const bcrypt = require("bcryptjs");
@@ -28,12 +26,11 @@ function connectToDatabase() {
 }
 
 
-// Function to create the new database table for events set up like:
+// Function to create the new database table for users set up like:
 // Columns:
 //   - id: Primary key 
-//   - eventName: Name of the event
-//   - eventDate: Date of the event
-//   - numTickets: Number of tickets
+//   - email: User's entered email address
+//   - hashedPassword: encrypted password using bcryptjs
 // No parameters
 function createDatabaseTable() {
 
@@ -56,9 +53,8 @@ function createDatabaseTable() {
 
 // Function to insert a new data entry into the database
 // Params: db - database connection
-// Params: eventName - name of event to be added
-// Params: eventDate - date of event to be added
-// Params: numTickets - number of tickets to be allocated to event
+// Params: email - user's email address
+// Params: hashedPassword - user's encrypted password using bcryptjs
 // Return: None
 function addUser(email, hashedPassword) {
 
@@ -95,6 +91,10 @@ function queryFullDatabase(db) {
     });
 }
 
+// Function to filter through the users database and find all matching data
+// entries with the desired email address.
+// Params: email - user's entered email address
+// Return: all sqlite entries with the matching email address
 const getUser = async (email) => {
 
     const db = connectToDatabase();
@@ -110,6 +110,11 @@ const getUser = async (email) => {
     });
 }
 
+
+// Function to verify the entered password from the user currently trying to login.
+// Params: email - the user's entered email address
+//         password - the unencrypted version of the user's password
+// Return: true or false depending on if the password correctly matches with the stored hashed password
 const verifyPassword = async (email, password) => {
 
     const user = await getUser(email);

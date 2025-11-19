@@ -1,6 +1,6 @@
-// Server file initializes the Express application for the client-facing API. Handles incoming
-// requests from frontend then handles it accordingly to mount all routes defined in clientRoutes.
-// Client-service allows users to view events and purchase tickets.
+// Server file initializes the Express application for the user-authentication API. Handles incoming
+// requests from frontend then handles it accordingly to mount all routes defined in uaRouters.
+// User-authentication allows users to have login, logout, and registration functionalities.
 
 
 const express = require('express');

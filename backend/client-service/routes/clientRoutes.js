@@ -4,8 +4,6 @@
 // Each route delegates request handling to controller functions
 // in clientController.js.
 
-// WILL NEED TO MODIFY, COPIED BASIC ROUTES STRUCTURE FROM PROVIDED TEMPLATE
-// CLIENT ROUTES
 
 const express = require('express');
 const router = express.Router();
