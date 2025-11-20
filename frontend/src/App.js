@@ -187,6 +187,9 @@ function App() {
   }
 
   useEffect(() => {
+
+    if (!loggedIn) return;
+    
     if (events && events.length > 0) {
       const summary = `Found ${events.length} event${events.length > 1 ? 's' : ''}. ` +
         events.map(ev => `${ev.eventName}, on ${ev.eventDate}, with ${ev.numTickets} tickets remaining. `).join(' ');
