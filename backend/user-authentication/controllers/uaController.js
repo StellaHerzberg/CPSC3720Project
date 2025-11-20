@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 const { connectToDatabase, queryFullDatabase, createDatabaseTable, addUser, getUser, verifyPassword } = require('../models/uaModel.js');
 
 // Constants used for jwt
-const EXPIRATION_VAL = "3m";
+const EXPIRATION_VAL = "30m";
 const JWT_VAL = "waffle-house";
 
 // Handles request to retrieve users from database and returns as JSON response

@@ -133,11 +133,12 @@ function App() {
   // Gets event data from API when it first mounts. Ensures list is populated when page loads.
   // Sends request to backend and updates local state
   useEffect(() => {
+    if (!loggedIn) return;
     fetch('http://localhost:6001/api/events')
     .then((res) => res.json())
     .then((data) => setEvents(data))
     .catch((err) => console.error(err));
-  }, [])
+  }, [loggedIn])
 
   const logout = async () => {
     try {
@@ -189,7 +190,7 @@ function App() {
   useEffect(() => {
 
     if (!loggedIn) return;
-    
+
     if (events && events.length > 0) {
       const summary = `Found ${events.length} event${events.length > 1 ? 's' : ''}. ` +
         events.map(ev => `${ev.eventName}, on ${ev.eventDate}, with ${ev.numTickets} tickets remaining. `).join(' ');
@@ -197,7 +198,7 @@ function App() {
       } else if (message) {
         speakText(message);
       }
-  }, [events, message]);
+  }, [events, message, loggedIn]);
   
 
   async function handleRequest(e) {
